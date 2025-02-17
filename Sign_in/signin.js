@@ -3,7 +3,7 @@ document.getElementById("signIn").addEventListener("submit", function (event) {
   
     let formData = new FormData(this);
     for (let [key, value] of formData.entries()) {
-      console.log(key, value); // Log form data
+      console.log(key, value); 
     }
   
     fetch("signin.php", {
@@ -11,16 +11,21 @@ document.getElementById("signIn").addEventListener("submit", function (event) {
       body: formData,
     })
       .then((response) => {
-        console.log(response); // Log the response object
+        console.log(response); 
         return response.json();
       })
       .then((data) => {
-        console.log(data); // Log the parsed JSON data
+        console.log(data); 
         if (data.success) {
-          window.location.href = "dashboard.php";
+          
+          window.location.href = "/ep/Dashboard/dashboard.html";
         } else {
-          document.getElementById("error-message").textContent = data.message;
+          
+          alert(data.message);
         }
       })
-      .catch((error) => console.error("Error:", error));
-  });
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred, please try again later.");
+      });
+});

@@ -1,58 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="signin.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="signin.css" />
     <title>EventHive | Sign in</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <header class="header">
-        <a href="index.html">
-            <h1>Event<span class="header-text">Hive</span></h1>
-        </a>
-        <nav>
-            <a href="#" class="create_btn">Create an event</a>
-            <a href="signup.html" class="signup">Signup</a>
-        </nav>
+      <a href="index.html">
+        <h1>Event<span class="header-text">Hive</span></h1>
+      </a>
+      <nav>
+        <a href="#" class="create_btn">Create an event</a>
+        <a href="signup.html" class="signup">Signup</a>
+      </nav>
     </header>
 
     <div class="container">
-        <div class="form-container">
-            <h2 class="signin-title">Sign In to Event Hive</h2>
+      <div class="form-container">
+        <h2 class="signin-title">Sign In to Event Hive</h2>
 
-            <form>
-                <label for="email">YOUR EMAIL</label>
-                <input type="email" id="email" class="input-field" placeholder="Enter your mail">
+        <form id="signIn">
+          <label for="email">YOUR EMAIL</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="input-field"
+            placeholder="Enter your mail"
+          />
 
-                <label for="password">PASSWORD</label>
-                <input type="password" id="password" class="input-field" placeholder="Enter your password">
+          <label for="password">PASSWORD</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="input-field"
+            placeholder="Enter your password"
+          />
 
-                <a href="#" class="forgot-password">Forgot your password?</a>
+          <a href="#" class="forgot-password">Forgot your password?</a>
 
-                <button type="submit" class="signin-btn">Sign In</button>
+          <button type="submit" class="signin-btn">Sign In</button>
 
-                <p class="or-text">Or</p>
+          <p class="or-text">Or</p>
 
-                <button class="google-btn">
-                    <img src="../resources/google_logo.png"
-                        alt="Google Logo">
-                    Sign up with Google
-                </button>
-            </form>
+          <button class="google-btn">
+            <img src="../resources/google_logo.png" alt="Google Logo" />
+            Sign up with Google
+          </button>
+        </form>
+      </div>
+
+      <div class="image-container">
+        <div class="overlay">
+          <h2>Hello Friend</h2>
+          <p>To keep connected with us, provide us with your information</p>
+          <button class="signup-btn">
+            <a href="signup.html" class="">Sign Up</a>
+          </button>
         </div>
-
-        <div class="image-container">
-            <div class="overlay">
-                <h2>Hello Friend</h2>
-                <p>To keep connected with us, provide us with your information</p>
-                <button class="signup-btn"><a href="signup.html" class="">Sign Up</a></button>
-            </div>
-            <img src="../resources/signin_img.png" alt="Placeholder Image">
-        </div>
+        <img src="../resources/signin_img.png" alt="Placeholder Image" />
+      </div>
     </div>
-</body>
-
+    <script src="signin.js"></script>
+  </body>
 </html>

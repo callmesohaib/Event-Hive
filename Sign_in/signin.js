@@ -17,7 +17,7 @@ document.getElementById("signIn").addEventListener("submit", function (event) {
     .then((data) => {
       console.log(data);
       if (data.success) {
-        window.location.href = "/ep/Home/home.html";
+        window.location.href = "/ep/Home/home.php";
       } else {
         alert(data.message);
       }

@@ -31,7 +31,9 @@ if (!$user) {
 if (password_verify($password, $user['password'])) {
     $_SESSION['user_id'] = $user['u_id'];
     $_SESSION['name'] = $user['name'];
-    echo json_encode(["success" => true]);
+    $_SESSION['is_logged_in'] = true; // Store login state
+
+    echo json_encode(["success" => true, "redirect" => "/ep/Home/home.html"]);
 } else {
     echo json_encode(["success" => false, "message" => "Invalid email or password"]);
 }

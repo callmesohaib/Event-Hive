@@ -27,7 +27,7 @@ $is_logged_in = isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'];
   </header>
 
   <section class="hero">
-    <img src="../resources/hero_section_img.png" alt="Hero Image" />
+    <img src="../resources/hero_section_img2.png" alt="Hero Image" />
     <h2>Made for those<br />who do</h2>
   </section>
 
@@ -95,7 +95,7 @@ $is_logged_in = isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'];
 
     <div class="event-cards">
       <div class="event-card">
-        <img src="../resources/event_1_img.png" alt="Event Image" />
+        <img src="../resources/event_1_img_updated.png" alt="Event Image" />
         <div class="event-info">
           <span class="event-tag">FREE</span>
           <h3>BestSeller Book Bootcamp - Write, Market & Publish</h3>
@@ -105,7 +105,7 @@ $is_logged_in = isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'];
       </div>
 
       <div class="event-card">
-        <img src="../resources/event_2_img.png" alt="Event Image" />
+        <img src="../resources/event_2_img_updated.png" alt="Event Image" />
         <div class="event-info">
           <span class="event-tag">FREE</span>
           <h3>BestSeller Book Bootcamp - Write, Market & Publish</h3>
@@ -115,7 +115,7 @@ $is_logged_in = isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'];
       </div>
 
       <div class="event-card">
-        <img src="../resources/event_3_img.png" alt="Event Image" />
+        <img src="../resources/event_3_img_updated.png" alt="Event Image" />
         <div class="event-info">
           <span class="event-tag">FREE</span>
           <h3>BestSeller Book Bootcamp - Write, Market & Publish</h3>

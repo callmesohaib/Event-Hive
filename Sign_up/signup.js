@@ -12,7 +12,7 @@ document.querySelector("form").addEventListener("submit", function (e) {
       alert(data.message);
 
       if (data.status === "success") {
-        window.location.href = "/ep/Sign_in/signin.html";
+        window.location.href = "/Event-Hive/Sign_in/signin.html";
       }
     })
     .catch((error) => console.error("Error:", error));

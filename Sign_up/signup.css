@@ -14,7 +14,7 @@ body {
   width: 90%;
   margin: 10px 0;
 }
-.header a{
+.header a {
   text-decoration: none;
 }
 
@@ -118,6 +118,7 @@ label {
 .overlay {
   position: absolute;
   top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
   left: 0;
   width: 90%;
   height: 100%;
@@ -137,7 +138,7 @@ label {
 .overlay h2 {
   line-height: 2px;
   font-size: 24px;
-  color: #fff;
+  color: white;
 }
 
 .overlay button {

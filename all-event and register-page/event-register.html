@@ -29,21 +29,19 @@
                     <label for="event">Select Your Event</label>
                     <select id="event" required>
                         <option value="" disabled selected>Choose your event</option>
-                        <option value="free">Free Event</option>
-                        <option value="paid">Paid Event</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="charges">Total Charges</label>
-                    <input type="text" id="charges" placeholder="Enter total charges">
+                    <input type="text" id="charges" placeholder="Enter total charges" disabled>
                 </div>
                 <div class="form-group">
                     <label for="payment">Payment Method</label>
-                    <input type="text" id="payment" placeholder="Enter payment details">
+                    <input type="text" id="payment" placeholder="Enter payment details" disabled>
                 </div>
                 <div class="form-group">
                     <label for="transaction">Transaction ID</label>
-                    <input type="text" id="transaction" placeholder="Enter your Transaction ID">
+                    <input type="text" id="transaction" placeholder="Enter your Transaction ID" disabled>
                 </div>
             </div>
 
@@ -51,15 +49,99 @@
         </form>
     </div>
 
-    <div id="popup" class="popup">
+    <div class="popup" id="successPopup">
         <div class="popup-content">
-            <p id="popup-message">🎉 Registered Successfully! 🎉</p>
-            <button id="close-popup">OK</button>
+            <p>🎉 Registration Successful! 🎉</p>
+            <button onclick="closePopup()">OK</button>
         </div>
     </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const events = [
+                {
+                    "id": 1,
+                    "name": "Tech Meetup 2025",
+                    "type": "Free"
+                },
+                {
+                    "id": 2,
+                    "name": "Web Dev Bootcamp",
+                    "type": "Paid"
+                },
+                {
+                    "id": 3,
+                    "name": "AI & Machine Learning Summit",
+                    "type": "Free"
+                }
+            ];
 
-    <script src="script_event_register.js"></script>
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventId = urlParams.get("event_id");
+
+            const eventDropdown = document.getElementById("event");
+            const chargesInput = document.getElementById("charges");
+            const paymentInput = document.getElementById("payment");
+            const transactionInput = document.getElementById("transaction");
+            const successPopup = document.getElementById("successPopup");
+
+            function togglePaymentFields(isPaid) {
+                chargesInput.disabled = !isPaid;
+                paymentInput.disabled = !isPaid;
+                transactionInput.disabled = !isPaid;
+
+                if (!isPaid) {
+                    chargesInput.value = "";
+                    paymentInput.value = "";
+                    transactionInput.value = "";
+                }
+            }
+
+            events.forEach(event => {
+                const option = document.createElement("option");
+                option.value = event.id;
+                option.textContent = event.name;
+                option.dataset.type = event.type;
+                eventDropdown.appendChild(option);
+            });
+
+            eventDropdown.addEventListener("change", function () {
+                const selectedOption = eventDropdown.options[eventDropdown.selectedIndex];
+                const eventType = selectedOption.dataset.type;
+
+                if (eventType === "Paid") {
+                    togglePaymentFields(true);
+                } else {
+                    togglePaymentFields(false);
+                }
+            });
+
+            if (eventId) {
+                eventDropdown.value = eventId;
+                const selectedOption = eventDropdown.options[eventDropdown.selectedIndex];
+                const eventType = selectedOption.dataset.type;
+                togglePaymentFields(eventType === "Paid");
+            }
+
+            eventForm.addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                // Simulate successful registration
+                successPopup.style.display = "flex";
+
+                // Reset the form after showing popup
+                setTimeout(() => {
+                    eventForm.reset();
+                    togglePaymentFields(false);
+                }, 500);
+            });
+
+            // Close Popup Function
+            window.closePopup = function () {
+                successPopup.style.display = "none";
+            };
+        });
+    </script>
 
 </body>
 

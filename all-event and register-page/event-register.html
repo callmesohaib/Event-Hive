@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration</title>
+    <link rel="stylesheet" href="styles_event_register.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Register for Event</h2>
+        <form id="eventForm">
+
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email address" required>
+            </div>
+
+            <div class="lowerform">
+                <div class="form-group">
+                    <label for="event">Select Your Event</label>
+                    <select id="event" required>
+                        <option value="" disabled selected>Choose your event</option>
+                        <option value="free">Free Event</option>
+                        <option value="paid">Paid Event</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="charges">Total Charges</label>
+                    <input type="text" id="charges" placeholder="Enter total charges">
+                </div>
+                <div class="form-group">
+                    <label for="payment">Payment Method</label>
+                    <input type="text" id="payment" placeholder="Enter payment details">
+                </div>
+                <div class="form-group">
+                    <label for="transaction">Transaction ID</label>
+                    <input type="text" id="transaction" placeholder="Enter your Transaction ID">
+                </div>
+            </div>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <p id="popup-message">🎉 Registered Successfully! 🎉</p>
+            <button id="close-popup">OK</button>
+        </div>
+    </div>
+
+
+    <script src="script_event_register.js"></script>
+
+</body>
+
+</html>

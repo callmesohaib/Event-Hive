@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration</title>
+    <link rel="stylesheet" href="event_register.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Register for Event</h2>
+        <form id="eventForm">
+
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email address" required>
+            </div>
+
+            <div class="lowerform">
+                <div class="form-group">
+                    <label for="event">Selected Event</label>
+                    <input type="text" id="event" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="charges">Total Charges $</label>
+                    <input type="text" id="charges" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="payment">Payment Method</label>
+                    <select id="payment" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="transaction">Transaction ID</label>
+                    <input type="text" id="transaction" required placeholder="Enter your Transaction ID" disabled>
+                </div>
+            </div>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <div class="popup" id="successPopup" style="display: none;">
+        <div class="popup-content">
+            <p>🎉 Registration Successful! 🎉</p>
+            <button onclick="closePopup()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventTitle = urlParams.get("event_title");
+            const eventType = urlParams.get("event_type");
+
+            const eventInput = document.getElementById("event");
+            const chargesInput = document.getElementById("charges");
+            const paymentMethod = document.getElementById("payment");
+            const transactionInput = document.getElementById("transaction");
+            const successPopup = document.getElementById("successPopup");
+            const okButton = successPopup.querySelector("button");
+
+            if (eventTitle) {
+                eventInput.value = eventTitle;
+                eventInput.disabled = true;
+            }
+
+            const storedEvents = JSON.parse(localStorage.getItem("events")) || [];
+            const eventDetails = storedEvents.find(event => event.title === eventTitle);
+
+            if (eventDetails) {
+                if (eventType === "paid") {
+                    chargesInput.value = eventDetails.price;
+                    paymentMethod.disabled = false;
+                    transactionInput.disabled = false;
+                } else {
+                    chargesInput.value = "0";
+                    paymentMethod.disabled = true;
+                    transactionInput.disabled = true;
+                }
+            }
+
+            chargesInput.disabled = true;
+
+            paymentMethod.innerHTML = `
+                <option value="Credit Card">Credit Card</option>
+                <option value="PayPal">PayPal</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+            `;
+
+            document.getElementById("eventForm").addEventListener("submit", function (e) {
+                e.preventDefault(); 
+                successPopup.style.display = "flex";
+            });
+
+            okButton.addEventListener("click", closePopup);
+        });
+
+        function closePopup() {
+            document.getElementById("successPopup").style.display = "none";
+        }
+    </script>
+
+</body>
+
+</html>

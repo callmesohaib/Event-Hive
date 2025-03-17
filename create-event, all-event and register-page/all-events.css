@@ -139,7 +139,6 @@ h2 .highlight {
   border-radius: 10px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  cursor: pointer;
 }
 
 .event-card img {
@@ -302,4 +301,13 @@ h2 .highlight {
 
 .language-button:hover {
   background: #5a36b2;
+}
+
+.register-btn {
+  padding: 10px 25px;
+  border-radius: 20px;
+  border: none;
+  background-color: #7848f3;
+  color: white;
+  cursor: pointer;
 }

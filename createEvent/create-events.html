@@ -1,155 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create Event</title>
-    <link rel="stylesheet" href="create-events.css">
-</head>
+    <link rel="stylesheet" href="create-events.css" />
+  </head>
 
-<body>
-
+  <body>
     <header class="header">
-        <h1>Event<span class="header-text">Hive</span></h1>
-        <nav>
-            <a href="signin.html">Login</a>
-            <a href="signup.html" class="signup">Signup</a>
-        </nav>
+      <h1>Event<span class="header-text">Hive</span></h1>
+      <nav>
+        <a href="signin.html">Login</a>
+        <a href="signup.html" class="signup">Signup</a>
+      </nav>
     </header>
 
     <div class="container">
-        <h1 class="title">Create Event</h1>
+      <h1 class="title">Create Event</h1>
 
-        <form id="createEventForm">
-            <div class="form-group">
-                <label for="eventTitle">Event Title</label>
-                <input type="text" id="eventTitle" placeholder="Enter event title" required>
-            </div>
+      <form id="createEventForm" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="eventTitle">Event Title</label>
+          <input
+            type="text"
+            id="eventTitle"
+            name="eventTitle"
+            placeholder="Enter event title"
+            required
+          />
+        </div>
 
-            <div class="form-group">
-                <label for="eventVenue">Event Venue</label>
-                <input type="text" id="eventVenue" placeholder="Enter event venue" required>
-            </div>
+        <div class="form-group">
+          <label for="eventVenue">Event Venue</label>
+          <input
+            type="text"
+            id="eventVenue"
+            name="eventVenue"
+            placeholder="Enter event venue"
+            required
+          />
+        </div>
 
-            <div class="row">
-                <div class="form-group">
-                    <label for="startTime">Start Time</label>
-                    <input type="time" id="startTime" required>
-                </div>
-                <div class="form-group">
-                    <label for="endTime">End Time</label>
-                    <input type="time" id="endTime" required>
-                </div>
-            </div>
+        <div class="row">
+          <div class="form-group">
+            <label for="startTime">Start Time</label>
+            <input type="time" id="startTime" name="startTime" required />
+          </div>
+          <div class="form-group">
+            <label for="endTime">End Time</label>
+            <input type="time" id="endTime" name="endTime" required />
+          </div>
+        </div>
 
-            <div class="row">
-                <div class="form-group">
-                    <label for="startDate">Start Date</label>
-                    <input type="date" id="startDate" required>
-                </div>
-                <div class="form-group">
-                    <label for="endDate">End Date</label>
-                    <input type="date" id="endDate" required>
-                </div>
-            </div>
+        <div class="row">
+          <div class="form-group">
+            <label for="startDate">Start Date</label>
+            <input type="date" id="startDate" name="startDate" required />
+          </div>
+          <div class="form-group">
+            <label for="endDate">End Date</label>
+            <input type="date" id="endDate" name="endDate" required />
+          </div>
+        </div>
 
-            <div class="row">
-                <div class="form-group">
-                    <label for="eventType">Type</label>
-                    <select id="eventType">
-                        <option value="free">Free</option>
-                        <option value="paid">Paid</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="eventPrice">Price $</label>
-                    <input type="number" id="eventPrice" placeholder="Enter price" min="0" disabled>
-                </div>
-            </div>
+        <div class="row">
+          <div class="form-group">
+            <label for="eventType">Type</label>
+            <select id="eventType" name="eventType">
+              <option value="free">Free</option>
+              <option value="paid">Paid</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="eventPrice">Price ($)</label>
+            <input
+              type="number"
+              id="eventPrice"
+              name="eventPrice"
+              placeholder="Enter price"
+              min="0"
+              disabled
+            />
+          </div>
+        </div>
 
-            <h2 class="section-title">Event Description</h2>
+        <h2 class="section-title">Event Description</h2>
 
-            <div class="form-group">
-                <label for="eventImage">Event Image</label>
-                <div class="image-upload">
-                    <input type="file" id="eventImage" accept="image/*">
-                </div>
-            </div>
+        <div class="form-group">
+          <label for="eventImage">Event Image</label>
+          <div class="image-upload">
+            <input
+              type="file"
+              id="eventImage"
+              name="eventImage"
+              accept="image/*"
+            />
+          </div>
+        </div>
 
-            <div class="form-group">
-                <label for="eventDescription">Event Description</label>
-                <textarea id="eventDescription" placeholder="Type here..." required></textarea>
-            </div>
+        <div class="form-group">
+          <label for="eventDescription">Event Description</label>
+          <textarea
+            id="eventDescription"
+            name="eventDescription"
+            placeholder="Type here..."
+            required
+          ></textarea>
+        </div>
 
-            <button type="submit">Create Event</button>
-        </form>
+        <button type="submit">Create Event</button>
+      </form>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById("createEventForm");
-            const eventType = document.getElementById("eventType");
-            const eventPrice = document.getElementById("eventPrice");
-
-            eventType.addEventListener("change", function () {
-                if (eventType.value === "paid") {
-                    eventPrice.removeAttribute("disabled");
-                } else {
-                    eventPrice.value = "";
-                    eventPrice.setAttribute("disabled", "true");
-                }
-            });
-
-            form.addEventListener("submit", function (event) {
-                event.preventDefault();
-
-                const eventData = {
-                    title: document.getElementById("eventTitle").value.trim(),
-                    venue: document.getElementById("eventVenue").value.trim(),
-                    startTime: document.getElementById("startTime").value,
-                    endTime: document.getElementById("endTime").value,
-                    startDate: document.getElementById("startDate").value,
-                    endDate: document.getElementById("endDate").value,
-                    type: eventType.value,
-                    price: eventType.value === "paid" ? eventPrice.value.trim() : "0",
-                    description: document.getElementById("eventDescription").value.trim(),
-                };
-
-                if (Object.values(eventData).some(value => value === "")) {
-                    showPopup("Please fill out all required fields.", "error");
-                    return;
-                }
-
-                let events = JSON.parse(localStorage.getItem("events")) || [];
-                events.push(eventData);
-                localStorage.setItem("events", JSON.stringify(events));
-
-                showPopup("Event Created Successfully!", "success");
-
-                setTimeout(() => {
-                    window.location.href = "all-events.html";
-                }, 2000);
-            });
-
-            function showPopup(message, type) {
-                const popup = document.createElement("div");
-                popup.className = `popup ${type}`;
-                popup.innerText = message;
-                document.body.appendChild(popup);
-
-                setTimeout(() => {
-                    popup.classList.add("show");
-                }, 100);
-
-                setTimeout(() => {
-                    popup.classList.remove("show");
-                    setTimeout(() => popup.remove(), 500);
-                }, 2500);
-            }
+      document
+        .getElementById("eventType")
+        .addEventListener("change", function () {
+          const priceInput = document.getElementById("eventPrice");
+          priceInput.disabled = this.value === "free";
+          if (this.value === "free") priceInput.value = "";
         });
 
-    </script>
-</body>
+      document
+        .getElementById("createEventForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
 
+          const formData = new FormData(this); // Collect all form data
+          try {
+            const response = await fetch("create_event.php", {
+              method: "POST",
+              body: formData,
+            });
+
+            const result = await response.json(); // ✅ Parse JSON response
+
+            if (result.status === "success") {
+              alert(result.message);
+              window.location.href = "/Event-Hive/allEvents/all-events.html"; // Redirect after success
+            } else {
+              alert(result.message); // Show error message
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Something went wrong. Please try again.");
+          }
+        });
+    </script>
+  </body>
 </html>

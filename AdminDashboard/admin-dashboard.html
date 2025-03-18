@@ -19,14 +19,12 @@
       </nav>
     </header>
 
-    <!-- Main Content -->
     <main class="container">
       <h2>All Events</h2>
 
-      <!-- Event Table -->
       <div class="event-table">
         <div class="event-row header-row">
-          <div>Event ID</div>
+          <div>Event No.</div>
           <div>Event Name</div>
           <div>Venue</div>
           <div>Start Date & Time</div>
@@ -37,12 +35,15 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        // Check if user is logged in
         fetch("../check_session.php")
           .then((response) => response.json())
           .then((data) => {
             console.log("Session Data:", data);
             if (!data.is_logged_in || data.email !== "admin@gmail.com") {
-              window.location.href = "/Event-Hive/Sign_in/signin.html"; 
+              window.location.href = "/Event-Hive/Sign_in/signin.html";
+            } else {
+              fetchEvents(); // Fetch events from the database if logged in
             }
           })
           .catch((error) => {
@@ -51,43 +52,66 @@
           });
       });
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const eventTable = document.querySelector(".event-table");
+      function fetchEvents() {
+        fetch("../allEvents/fetch_events.php")
+          .then((response) => response.json())
+          .then((events) => {
+            if (events.error) {
+              console.error("Error fetching events:", events.error);
+              return;
+            }
 
-     
-        let events = JSON.parse(localStorage.getItem("events")) || [];
+            const eventTable = document.querySelector(".event-table");
 
-        events = events.map((event, index) => ({
-          id: index + 1, 
-        }));
 
-        // Populate the event table dynamically
-        events.forEach((event) => {
-          const eventRow = document.createElement("div");
-          eventRow.classList.add("event-row");
-          eventRow.innerHTML = `
-                    <div>#${event.id}</div>
-                    <div>${event.title}</div>
-                    <div>${event.venue}</div>
-                    <div>${event.startDate} | ${event.startTime}</div>
-                    <div>
-                        <button class="edit-btn" onclick="editEvent(${event.id})">Edit</button>
-                        <button class="delete-btn" onclick="deleteEvent(${event.id})">Delete</button>
-                    </div>
-                `;
-          eventTable.appendChild(eventRow);
-        });
-      });
+            document
+              .querySelectorAll(".event-row:not(.header-row)")
+              .forEach((row) => row.remove());
+
+            events.forEach((event, index) => {
+              const eventRow = document.createElement("div");
+              eventRow.classList.add("event-row");
+              eventRow.innerHTML = `
+                        <div>${index + 1}</div>
+                        <div>${event.title}</div>
+                        <div>${event.venue}</div>
+                        <div>${event.start_date} | ${event.start_time}</div>
+                        <div>
+                            <button class="edit-btn" onclick="editEvent(${
+                              event.id
+                            })">Edit</button>
+                            <button class="delete-btn" onclick="deleteEvent(${
+                              event.id
+                            })">Delete</button>
+                        </div>
+                    `;
+              eventTable.appendChild(eventRow);
+            });
+          })
+          .catch((error) => console.error("Error fetching events:", error));
+      }
 
       function editEvent(id) {
         alert("Edit event with ID: " + id);
-        // Implement actual edit functionality here
       }
 
       function deleteEvent(id) {
         if (confirm("Are you sure you want to delete this event?")) {
-          alert("Deleted event with ID: " + id);
-          // Implement actual delete functionality here
+          fetch("../delete_event.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                alert("Event deleted successfully!");
+                fetchEvents();
+              } else {
+                alert("Error deleting event: " + data.error);
+              }
+            })
+            .catch((error) => console.error("Error deleting event:", error));
         }
       }
     </script>

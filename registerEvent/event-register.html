@@ -1,115 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Event Registration</title>
-    <link rel="stylesheet" href="event_register.css">
-</head>
+    <link rel="stylesheet" href="event_register.css" />
+  </head>
 
-<body>
-
+  <body>
     <div class="container">
-        <h2>Register for Event</h2>
-        <form id="eventForm">
+      <h2>Register for Event</h2>
+      <form id="eventForm">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" disabled />
+        </div>
 
-            <div class="form-group">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" placeholder="Enter your name" required>
-            </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" disabled />
+        </div>
 
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" placeholder="Enter your email address" required>
-            </div>
+        <div class="lowerform">
+          <div class="form-group">
+            <label for="event">Selected Event</label>
+            <input type="text" id="event" disabled />
+          </div>
 
-            <div class="lowerform">
-                <div class="form-group">
-                    <label for="event">Selected Event</label>
-                    <input type="text" id="event" disabled>
-                </div>
+          <div class="form-group">
+            <label for="charges">Total Charges $</label>
+            <input type="text" id="charges" disabled />
+          </div>
 
-                <div class="form-group">
-                    <label for="charges">Total Charges $</label>
-                    <input type="text" id="charges" disabled>
-                </div>
+          <div class="form-group">
+            <label for="payment">Payment Method</label>
+            <select id="payment" required>
+              <option value="Credit Card">Credit Card</option>
+              <option value="PayPal">PayPal</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+            </select>
+          </div>
 
-                <div class="form-group">
-                    <label for="payment">Payment Method</label>
-                    <select id="payment" required></select>
-                </div>
-                <div class="form-group">
-                    <label for="transaction">Transaction ID</label>
-                    <input type="text" id="transaction" required placeholder="Enter your Transaction ID" disabled>
-                </div>
-            </div>
+          <div class="form-group">
+            <label for="transaction">Transaction ID</label>
+            <input
+              type="text"
+              id="transaction"
+              required
+              placeholder="Enter your Transaction ID"
+            />
+          </div>
+        </div>
 
-            <button type="submit">Register</button>
-        </form>
+        <button type="submit">Register</button>
+      </form>
     </div>
 
-    <div class="popup" id="successPopup" style="display: none;">
-        <div class="popup-content">
-            <p>🎉 Registration Successful! 🎉</p>
-            <button onclick="closePopup()">OK</button>
-        </div>
+    <div class="popup" id="successPopup" style="display: none">
+      <div class="popup-content">
+        <p>🎉 Registration Successful! 🎉</p>
+        <button onclick="closePopup()">OK</button>
+      </div>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const eventTitle = urlParams.get("event_title");
-            const eventType = urlParams.get("event_type");
+      document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventTitle = urlParams.get("event_title");
+        const eventPrice = urlParams.get("event_price");
 
-            const eventInput = document.getElementById("event");
-            const chargesInput = document.getElementById("charges");
-            const paymentMethod = document.getElementById("payment");
-            const transactionInput = document.getElementById("transaction");
-            const successPopup = document.getElementById("successPopup");
-            const okButton = successPopup.querySelector("button");
+        document.getElementById("event").value = eventTitle;
+        document.getElementById("charges").value = eventPrice;
 
-            if (eventTitle) {
-                eventInput.value = eventTitle;
-                eventInput.disabled = true;
+        fetch("../get_session.php")
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.name && data.email) {
+              document.getElementById("name").value = data.name;
+              document.getElementById("email").value = data.email;
+            } else {
+              document.getElementById("name").value = "Guest";
+              document.getElementById("email").value = "No Email";
             }
+          })
+          .catch((error) =>
+            console.error("Error fetching session data:", error)
+          );
 
-            const storedEvents = JSON.parse(localStorage.getItem("events")) || [];
-            const eventDetails = storedEvents.find(event => event.title === eventTitle);
+        document
+          .getElementById("eventForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
 
-            if (eventDetails) {
-                if (eventType === "paid") {
-                    chargesInput.value = eventDetails.price;
-                    paymentMethod.disabled = false;
-                    transactionInput.disabled = false;
+            const formData = {
+              full_name: document.getElementById("name").value,
+              email: document.getElementById("email").value,
+              event_title: document.getElementById("event").value,
+              event_type: eventPrice > 0 ? "paid" : "free",
+              charges: eventPrice,
+              payment_method: document.getElementById("payment").value,
+              transaction_id: document.getElementById("transaction").value,
+            };
+
+            fetch("register_event.php", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(formData),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.success) {
+                  document.getElementById("successPopup").style.display =
+                    "flex";
                 } else {
-                    chargesInput.value = "0";
-                    paymentMethod.disabled = true;
-                    transactionInput.disabled = true;
+                  alert(data.message);
                 }
-            }
+              })
+              .catch((error) => console.error("Error:", error));
+          });
+      });
 
-            chargesInput.disabled = true;
-
-            paymentMethod.innerHTML = `
-                <option value="Credit Card">Credit Card</option>
-                <option value="PayPal">PayPal</option>
-                <option value="Bank Transfer">Bank Transfer</option>
-            `;
-
-            document.getElementById("eventForm").addEventListener("submit", function (e) {
-                e.preventDefault(); 
-                successPopup.style.display = "flex";
-            });
-
-            okButton.addEventListener("click", closePopup);
-        });
-
-        function closePopup() {
-            document.getElementById("successPopup").style.display = "none";
-        }
+      function closePopup() {
+        document.getElementById("successPopup").style.display = "none";
+        window.location.href = "/Event-Hive/allEvents/all-events.html";
+      }
     </script>
-
-</body>
-
+  </body>
 </html>

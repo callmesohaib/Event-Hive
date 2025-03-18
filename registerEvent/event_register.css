@@ -132,7 +132,6 @@ button:hover {
   background-color: #6c40db;
 }
 
-/* Fade In Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;

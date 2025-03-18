@@ -11,8 +11,7 @@
     <header class="header">
       <h1>Event<span class="header-text">Hive</span></h1>
       <nav>
-        <a href="signin.html">Login</a>
-        <a href="signup.html" class="signup">Signup</a>
+        <a href="../logout.php" class="signup">Logout</a>
       </nav>
     </header>
 
@@ -44,6 +43,12 @@
       </div>
 
       <div class="event-cards"></div>
+      <div class="popup" id="successPopup" style="display: none">
+        <div class="popup-content">
+          <p>🎉 Registration Successful! 🎉</p>
+          <button onclick="closePopup()">OK</button>
+        </div>
+      </div>
     </section>
 
     <footer class="footer">
@@ -84,6 +89,19 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
+        fetch("../check_session.php")
+          .then((response) => response.json())
+          .then((data) => {
+            if (!data.is_logged_in) {
+              window.location.href = "/Event-Hive/Sign_in/signin.html";
+            } else {
+              sessionData = data;
+            }
+          })
+          .catch((error) => console.error("Error checking session:", error));
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
         const eventCardsContainer = document.querySelector(".event-cards");
 
         fetch("fetch_events.php")
@@ -101,25 +119,27 @@
               card.classList.add("event-card");
 
               card.innerHTML = `
-              <img src="${
-                event.image || "https://placehold.co/600x400"
-              }" alt="${event.title}">
-              <div class="event-info">
-                  <span class="event-tag">${event.type || "Free"}</span>
-                  <h3>${event.title}</h3>
-                  <p class="event-date">${event.start_date} - ${
-                event.end_date
-              } | ${event.start_time} - ${event.end_time}</p>
-                  <p class="event-location">${event.venue}</p>
-                  <button class="register-btn" data-title="${
-                    event.title
-                  }" data-type="${event.type}" data-start="${
-                event.start_date
-              } ${event.start_time}" data-end="${event.end_date} ${
-                event.end_time
-              }">Register</button>
-              </div>
-          `;
+          <img src="${event.image || "https://placehold.co/600x400"}" alt="${
+                event.title
+              }">
+          <div class="event-info">
+              <span class="event-tag">${event.type || "Free"}</span>
+              <h3>${event.title}</h3>
+              <p class="event-date">${event.start_date} - ${event.end_date} | ${
+                event.start_time
+              } - ${event.end_time}</p>
+              <p class="event-location">${event.venue}</p>
+             <button class="register-btn" data-title="${event.title}" 
+  data-type="${event.type}" data-start="${event.start_date} ${
+                event.start_time
+              }" 
+  data-end="${event.end_date} ${event.end_time}"
+  ${event.is_registered ? "disabled" : ""}>
+  ${event.is_registered ? "Registered" : "Register"}
+</button>
+
+          </div>
+      `;
 
               card
                 .querySelector(".register-btn")
@@ -130,11 +150,12 @@
                   const endTime = this.getAttribute("data-end");
 
                   if (eventType.toLowerCase() === "free") {
-                    const userEmail = prompt("Enter your email:");
-                    const userName = prompt("Enter your name:");
-
-                    if (!userEmail || !userName) {
-                      alert("Email and Name are required!");
+                    if (
+                      !sessionData ||
+                      !sessionData.email ||
+                      !sessionData.name
+                    ) {
+                      alert("Session data missing. Please log in again.");
                       return;
                     }
 
@@ -144,18 +165,20 @@
                         "Content-Type": "application/json",
                       },
                       body: JSON.stringify({
-                        email: userEmail,
-                        name: userName,
+                        email: sessionData.email,
+                        full_name: sessionData.name,
                         event_title: eventTitle,
                         event_type: eventType,
-                        event_start: startTime,
-                        event_end: endTime,
                       }),
                     })
                       .then((response) => response.json())
                       .then((data) => {
                         if (data.success) {
-                          alert("Registration Successful!");
+                          document.getElementById(
+                            "successPopup"
+                          ).style.display = "flex";
+                          this.textContent = "Registered";
+                          this.disabled = true;
                         } else {
                           alert("Registration Failed!");
                         }
@@ -165,11 +188,11 @@
                         alert("Something went wrong!");
                       });
                   } else {
-                    const eventTitle = this.getAttribute("data-title");
-                    const eventType = this.getAttribute("data-type");
                     window.location.href = `/Event-Hive/registerEvent/event-register.html?event_title=${encodeURIComponent(
                       eventTitle
-                    )}&event_type=${encodeURIComponent(eventType)}`;
+                    )}&event_type=${encodeURIComponent(
+                      eventType
+                    )}&event_price=${encodeURIComponent(event.price)}`;
                   }
                 });
 
@@ -181,6 +204,9 @@
             eventCardsContainer.innerHTML = "<p>Failed to load events.</p>";
           });
       });
+      function closePopup() {
+        document.getElementById("successPopup").style.display = "none";
+      }
     </script>
   </body>
 </html>

@@ -18,7 +18,7 @@ $is_logged_in = isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'];
     <h1>Event<span class="header-text">Hive</span></h1>
     <nav>
       <?php if ($is_logged_in): ?>
-        <a href="logout.php" class="signup">Logout</a>
+        <a href="../logout.php" class="signup">Logout</a>
       <?php else: ?>
         <a href="../Sign_in/signin.html">Login</a>
         <a href="../Sign_up/signup.html" class="signup">Signup</a>
@@ -254,7 +254,7 @@ $is_logged_in = isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'];
       </div>
       <div class="footer-links">
         <a href="#" class="footer-link">Home</a>
-        <a href="#" class="footer-link">About</a>
+        <a href="../allEvents/all-events.html" class="footer-link">About</a>
         <a href="#" class="footer-link">Services</a>
         <a href="#" class="footer-link">Get in touch</a>
         <a href="#" class="footer-link">FAQs</a>

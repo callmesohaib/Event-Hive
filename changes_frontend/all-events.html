@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Events</title>
+    <link rel="stylesheet" href="all-events.css">
+</head>
+
+<body>
+    <header class="header">
+        <h1>Event<span class="header-text">Hive</span></h1>
+        <nav>
+            <a href="signin.html">Login</a>
+            <a href="signup.html" class="signup">Signup</a>
+        </nav>
+    </header>
+
+    <section class="event-section">
+        <div class="event-text">
+            <p class="subheading">Thriving Above Event Expectations.</p>
+            <h2>Event<span class="highlight">Hive</span>-ing the Best.Day. Ever.</h2>
+            <div class="stats">
+                <div class="stat-box">
+                    <p class="stat-number">2k+</p>
+                    <p class="stat-label">Total Events Hosted</p>
+                </div>
+                <div class="stat-box">
+                    <p class="stat-number">100+</p>
+                    <p class="stat-label">Total Events Live</p>
+                </div>
+            </div>
+        </div>
+        <div class="event-image">
+            <img src="resources/all-events-hero.png" alt="Event showcase">
+        </div>
+    </section>
+
+    <section class="events">
+        <div class="events-header">
+            <h2>All <span class="highlight">Events</span></h2>
+        </div>
+
+        <div class="event-cards"></div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-title">
+                <span class="white-text">Event</span>
+                <span class="blue-text">Hive</span>
+            </div>
+            <div class="subscribe-section">
+                <input type="email" placeholder="Enter your mail" class="email-input">
+                <button class="subscribe-button">Subscribe</button>
+            </div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Home</a>
+                <a href="#" class="footer-link">About</a>
+                <a href="#" class="footer-link">Services</a>
+                <a href="#" class="footer-link">Get in touch</a>
+                <a href="#" class="footer-link">FAQs</a>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    Non Copyrighted © 2023 Upload by EventHive
+                </div>
+                <div class="footer-logo"></div>
+                <div class="footer-languages">
+                    <button class="language-button">English</button>
+                    <button class="language-button">French</button>
+                    <button class="language-button">Hindi</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let storedEvents = localStorage.getItem("events");
+            let events = storedEvents ? JSON.parse(storedEvents) : [];
+            const eventCardsContainer = document.querySelector(".event-cards");
+            eventCardsContainer.innerHTML = "";
+
+            if (events.length === 0) {
+                eventCardsContainer.innerHTML = "<p>No events found.</p>";
+                return;
+            }
+
+
+
+            //     events.forEach(event => {
+            //         const card = document.createElement("div");
+            //         card.classList.add("event-card");
+
+            //         card.innerHTML = `
+            //     <img src="${event.image || 'https://placehold.co/600x400'}" alt="${event.title}">
+            //     <div class="event-info">
+            //         <span class="event-tag">${event.type || 'Free'}</span>
+            //         <h3>${event.title}</h3>
+            //         <p class="event-date">${event.startDate} - ${event.endDate} | ${event.startTime} - ${event.endTime}</p>
+            //         <p class="event-location">${event.venue}</p>
+            //         <button class="register-btn" data-title="${event.title}" data-type="${event.type}">Register</button>
+            //     </div>
+            // `;
+
+            //         card.querySelector(".register-btn").addEventListener("click", function () {
+            //             const eventTitle = this.getAttribute("data-title");
+            //             const eventType = this.getAttribute("data-type");
+            //             window.location.href = `event-register.html?event_title=${encodeURIComponent(eventTitle)}&event_type=${encodeURIComponent(eventType)}`;
+            //         });
+
+            //         eventCardsContainer.appendChild(card);
+            //     });
+
+            events.forEach(event => {
+                const card = document.createElement("div");
+                card.classList.add("event-card");
+
+                // Updated event-tag logic
+                const eventTag = event.type === "paid" ? `${event.type} - $${event.price}` : "free";
+
+                card.innerHTML = `
+        <img src="${event.image || 'https://placehold.co/600x400'}" alt="${event.title}">
+        <div class="event-info">
+            <span class="event-tag">${eventTag}</span> <!-- Highlighted Change -->
+            <h3>${event.title}</h3>
+            <p class="event-date">${event.startDate} - ${event.endDate} | ${event.startTime} - ${event.endTime}</p>
+            <p class="event-location">${event.venue}</p>
+            <button class="register-btn" data-title="${event.title}" data-type="${event.type}">Register</button>
+        </div>
+    `;
+
+                card.querySelector(".register-btn").addEventListener("click", function () {
+                    const eventTitle = this.getAttribute("data-title");
+                    const eventType = this.getAttribute("data-type");
+                    window.location.href = `event-register.html?event_title=${encodeURIComponent(eventTitle)}&event_type=${encodeURIComponent(eventType)}`;
+                });
+
+                eventCardsContainer.appendChild(card);
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>

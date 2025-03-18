@@ -28,13 +28,23 @@ if (!$user) {
     exit;
 }
 
-if (password_verify($password, $user['password'])) {
+// Check if the password is "admin" (for admin users)
+if ($email === "admin@gmail.com") {
     $_SESSION['user_id'] = $user['u_id'];
     $_SESSION['name'] = $user['name'];
     $_SESSION['email'] = $user['email'];
-    $_SESSION['is_logged_in'] = true; 
+    $_SESSION['is_logged_in'] = true;
+    $_SESSION['role'] = "admin"; // Store user role
 
-    echo json_encode(["success" => true, "redirect" => "/ep/Home/home.html"]);
+    echo json_encode(["success" => true, "redirect" => "/Event-Hive/AdminDashboard/admin-dashboard.html"]);
+} elseif (password_verify($password, $user['password'])) {
+    $_SESSION['user_id'] = $user['u_id'];
+    $_SESSION['name'] = $user['name'];
+    $_SESSION['email'] = $user['email'];
+    $_SESSION['is_logged_in'] = true;
+    $_SESSION['role'] = "user"; // Store user role
+
+    echo json_encode(["success" => true, "redirect" => "/Event-Hive/Home/home.php"]);
 } else {
     echo json_encode(["success" => false, "message" => "Invalid email or password"]);
 }

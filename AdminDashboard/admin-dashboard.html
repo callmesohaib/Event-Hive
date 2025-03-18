@@ -1,57 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin - Event Management</title>
-    <link rel="stylesheet" href="admin-dashboard.css">
-</head>
+    <link rel="stylesheet" href="admin-dashboard.css" />
+  </head>
 
-<body>
-
+  <body>
     <!-- Navbar -->
     <header class="header">
-        <h1>Event<span class="header-text">Hive</span></h1>
-        <nav>
-            <a href="create-events.html" class="signup">Create an Event</a>
-        </nav>
+      <h1>Event<span class="header-text">Hive</span></h1>
+      <nav>
+        <a href="../createEvent/create-events.html" class="signup"
+          >Create an Event</a
+        >
+        <a href="../logout.php" class="signup">Logout</a>
+      </nav>
     </header>
 
     <!-- Main Content -->
     <main class="container">
-        <h2>All Events</h2>
+      <h2>All Events</h2>
 
-        <!-- Event Table -->
-        <div class="event-table">
-            <div class="event-row header-row">
-                <div>Event ID</div>
-                <div>Event Name</div>
-                <div>Venue</div>
-                <div>Start Date & Time</div>
-                <div>Actions</div>
-            </div>
+      <!-- Event Table -->
+      <div class="event-table">
+        <div class="event-row header-row">
+          <div>Event ID</div>
+          <div>Event Name</div>
+          <div>Venue</div>
+          <div>Start Date & Time</div>
+          <div>Actions</div>
         </div>
+      </div>
     </main>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const eventTable = document.querySelector(".event-table");
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("../check_session.php")
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Session Data:", data);
+            if (!data.is_logged_in || data.email !== "admin@gmail.com") {
+              window.location.href = "/Event-Hive/Sign_in/signin.html"; 
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching session:", error);
+            window.location.href = "/Event-Hive/Sign_in/signin.html";
+          });
+      });
 
-            // Retrieve events from localStorage
-            let events = JSON.parse(localStorage.getItem("events")) || [];
+      document.addEventListener("DOMContentLoaded", function () {
+        const eventTable = document.querySelector(".event-table");
 
-            // Assign a unique ID (if not already present)
-            events = events.map((event, index) => ({
-                id: index + 1,  // Assigning incremental IDs
-                ...event
-            }));
+     
+        let events = JSON.parse(localStorage.getItem("events")) || [];
 
-            // Populate the event table dynamically
-            events.forEach(event => {
-                const eventRow = document.createElement("div");
-                eventRow.classList.add("event-row");
-                eventRow.innerHTML = `
+        events = events.map((event, index) => ({
+          id: index + 1, 
+        }));
+
+        // Populate the event table dynamically
+        events.forEach((event) => {
+          const eventRow = document.createElement("div");
+          eventRow.classList.add("event-row");
+          eventRow.innerHTML = `
                     <div>#${event.id}</div>
                     <div>${event.title}</div>
                     <div>${event.venue}</div>
@@ -61,23 +75,21 @@
                         <button class="delete-btn" onclick="deleteEvent(${event.id})">Delete</button>
                     </div>
                 `;
-                eventTable.appendChild(eventRow);
-            });
+          eventTable.appendChild(eventRow);
         });
+      });
 
-        function editEvent(id) {
-            alert("Edit event with ID: " + id);
-            // Implement actual edit functionality here
-        }
+      function editEvent(id) {
+        alert("Edit event with ID: " + id);
+        // Implement actual edit functionality here
+      }
 
-        function deleteEvent(id) {
-            if (confirm("Are you sure you want to delete this event?")) {
-                alert("Deleted event with ID: " + id);
-                // Implement actual delete functionality here
-            }
+      function deleteEvent(id) {
+        if (confirm("Are you sure you want to delete this event?")) {
+          alert("Deleted event with ID: " + id);
+          // Implement actual delete functionality here
         }
+      }
     </script>
-
-</body>
-
+  </body>
 </html>

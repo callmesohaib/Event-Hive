@@ -17,7 +17,7 @@ document.getElementById("signIn").addEventListener("submit", function (event) {
     .then((data) => {
       console.log(data);
       if (data.success) {
-        window.location.href = "/Event-Hive/Home/home.php";
+        window.location.href = data.redirect;
       } else {
         alert(data.message);
       }

@@ -11,8 +11,10 @@
     <header class="header">
       <h1>Event<span class="header-text">Hive</span></h1>
       <nav>
-        <a href="signin.html">Login</a>
-        <a href="signup.html" class="signup">Signup</a>
+        <a href="../AdminDashboard/admin-dashboard.html" class="signup"
+          >All Events</a
+        >
+        <a href="../logout.php" class="signup">Logout</a>
       </nav>
     </header>
 
@@ -121,6 +123,20 @@
     </div>
 
     <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("../check_session.php")
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Session Data:", data);
+            if (!data.is_logged_in || data.email !== "admin@gmail.com") {
+              window.location.href = "/Event-Hive/Sign_in/signin.html";
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching session:", error);
+            window.location.href = "/Event-Hive/Sign_in/signin.html";
+          });
+      });
       document
         .getElementById("eventType")
         .addEventListener("change", function () {

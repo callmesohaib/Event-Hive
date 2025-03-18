@@ -1,7 +1,21 @@
 <?php
 session_start();
 $is_logged_in = isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'];
+include '../dbConnection.php';
+
+$upcoming_events_query = "SELECT * FROM events WHERE start_date >= NOW() AND category = 'event' ORDER BY start_date ASC";
+$upcoming_events_result = $conn->query($upcoming_events_query);
+
+$upcoming_conferences_query = "SELECT * FROM events WHERE start_date >= NOW() AND category = 'conference' ORDER BY start_date ASC";
+$upcoming_conferences_result = $conn->query($upcoming_conferences_query);
+
+$past_events_query = "SELECT * FROM events WHERE end_date < NOW() AND category = 'event' ORDER BY end_date DESC";
+$past_events_result = $conn->query($past_events_query);
+
+$past_conferences_query = "SELECT * FROM events WHERE end_date < NOW() AND category = 'conference' ORDER BY end_date DESC";
+$past_conferences_result = $conn->query($past_conferences_query);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,118 +45,63 @@ $is_logged_in = isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'];
     <h2>Made for those<br />who do</h2>
   </section>
 
-  <section class="search-bar">
-    <div class="search-input">
-      <label for="search">Looking for</label>
-      <input type="text" placeholder="Choose event type" disabled />
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 9L12 15L18 9" stroke="#10107B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-    </div>
-    <div class="search-input">
-      <label for="search">Location</label>
-      <input type="text" placeholder="Choose location" disabled />
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 9L12 15L18 9" stroke="#10107B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-    </div>
-    <div class="search-input">
-      <label for="search">When</label>
-      <input type="text" placeholder="Choose date and time" disabled />
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 9L12 15L18 9" stroke="#10107B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-    </div>
-    <div class="search-icon">
-      <svg width="50" height="50" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="70" height="70" rx="5" fill="#7848F4" />
-        <path
-          d="M34 42C38.4183 42 42 38.4183 42 34C42 29.5817 38.4183 26 34 26C29.5817 26 26 29.5817 26 34C26 38.4183 29.5817 42 34 42Z"
-          stroke="#F8F8FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="M43.9999 43.9999L39.6499 39.6499" stroke="#F8F8FA" stroke-width="2" stroke-linecap="round"
-          stroke-linejoin="round" />
-      </svg>
-    </div>
-  </section>
-
+  <!-- Upcoming Events -->
   <section class="events">
     <div class="events-header">
       <h2>Upcoming <span class="highlight">Events</span></h2>
     </div>
-
     <div class="event-cards">
-      <div class="event-card">
-        <img src="../resources/event_1_img_updated.png" alt="Event Image" />
-        <div class="event-info">
-          <span class="event-tag">FREE</span>
-          <h3>BestSeller Book Bootcamp - Write, Market & Publish</h3>
-          <p class="event-date">Saturday, March 18, 9:30 PM</p>
-          <p class="event-location">ONLINE EVENT - Attend Anywhere</p>
-        </div>
-      </div>
-
-      <div class="event-card">
-        <img src="../resources/event_2_img_updated.png" alt="Event Image" />
-        <div class="event-info">
-          <span class="event-tag">FREE</span>
-          <h3>BestSeller Book Bootcamp - Write, Market & Publish</h3>
-          <p class="event-date">Saturday, March 18, 9:30 PM</p>
-          <p class="event-location">ONLINE EVENT - Attend Anywhere</p>
-        </div>
-      </div>
-
-      <div class="event-card">
-        <img src="../resources/event_4_img_updated.png" alt="Event Image" />
-        <div class="event-info">
-          <span class="event-tag">FREE</span>
-          <h3>BestSeller Book Bootcamp - Write, Market & Publish</h3>
-          <p class="event-date">Saturday, March 18, 9:30 PM</p>
-          <p class="event-location">ONLINE EVENT - Attend Anywhere</p>
-        </div>
-      </div>
+      <?php if ($upcoming_events_result->num_rows > 0): ?>
+        <?php while ($event = $upcoming_events_result->fetch_assoc()): ?>
+          <div class="event-card">
+            <img src="../resources/<?php echo htmlspecialchars($event['image']); ?>" alt="Event Image" />
+            <div class="event-info">
+              <span class="event-tag">
+                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - $" . htmlspecialchars($event['price']); ?>
+              </span>
+              <h3><?php echo htmlspecialchars($event['title']); ?></h3>
+              <p class="event-date">
+                <?php echo date("l, F j, g:i A", strtotime($event['start_date'] . ' ' . $event['start_time'])); ?>
+              </p>
+              <p class="event-location"><?php echo htmlspecialchars($event['venue']); ?></p>
+              <p class="event-des"><?php echo htmlspecialchars($event['description']); ?></p>
+            </div>
+          </div>
+        <?php endwhile; ?>
+      <?php else: ?>
+        <p class="no-events">No upcoming events available.</p>
+      <?php endif; ?>
     </div>
-
   </section>
 
+  <!-- Past Events -->
   <section class="events">
     <div class="events-header">
       <h2>Past <span class="highlight">Events</span></h2>
     </div>
-
     <div class="event-cards">
-      <div class="event-card">
-        <img src="../resources/event_1_img_updated.png" alt="Event Image" />
-        <div class="event-info">
-          <span class="event-tag">FREE</span>
-          <h3>BestSeller Book Bootcamp - Write, Market & Publish</h3>
-          <p class="event-date">Saturday, March 18, 9:30 PM</p>
-          <p class="event-location">ONLINE EVENT - Attend Anywhere</p>
-        </div>
-      </div>
-
-      <div class="event-card">
-        <img src="../resources/event_2_img_updated.png" alt="Event Image" />
-        <div class="event-info">
-          <span class="event-tag">FREE</span>
-          <h3>BestSeller Book Bootcamp - Write, Market & Publish</h3>
-          <p class="event-date">Saturday, March 18, 9:30 PM</p>
-          <p class="event-location">ONLINE EVENT - Attend Anywhere</p>
-        </div>
-      </div>
-
-      <div class="event-card">
-        <img src="../resources/event_4_img_updated.png" alt="Event Image" />
-        <div class="event-info">
-          <span class="event-tag">FREE</span>
-          <h3>BestSeller Book Bootcamp - Write, Market & Publish</h3>
-          <p class="event-date">Saturday, March 18, 9:30 PM</p>
-          <p class="event-location">ONLINE EVENT - Attend Anywhere</p>
-        </div>
-      </div>
+      <?php if ($past_events_result->num_rows > 0): ?>
+        <?php while ($event = $past_events_result->fetch_assoc()): ?>
+          <div class="event-card">
+            <img src="../resources/<?php echo htmlspecialchars($event['image']); ?>" alt="Event Image" />
+            <div class="event-info">
+              <span class="event-tag">
+                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - $" . htmlspecialchars($event['price']); ?>
+              </span>
+              <h3><?php echo htmlspecialchars($event['title']); ?></h3>
+              <p class="event-date">
+                <?php echo date("l, F j, g:i A", strtotime($event['start_date'] . ' ' . $event['start_time'])); ?>
+              </p>
+              <p class="event-location"><?php echo htmlspecialchars($event['venue']); ?></p>
+              <p class="event-des"><?php echo htmlspecialchars($event['description']); ?></p>
+            </div>
+          </div>
+        <?php endwhile; ?>
+      <?php else: ?>
+        <p class="no-events">No past events available.</p>
+      <?php endif; ?>
     </div>
-
   </section>
-
 
   <section>
     <div class="event-section">
@@ -159,87 +118,65 @@ $is_logged_in = isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'];
       </div>
     </div>
   </section>
-
-
+  
+  <!-- Upcoming Conferences -->
   <section class="events">
     <div class="events-header">
       <h2>Upcoming <span class="highlight">Conferences</span></h2>
     </div>
-
     <div class="event-cards">
-      <div class="event-card">
-        <img src="../resources/event_1_img_updated.png" alt="Event Image" />
-        <div class="event-info">
-          <span class="event-tag">FREE</span>
-          <h3>BestSeller Book Bootcamp - Write, Market & Publish</h3>
-          <p class="event-date">Saturday, March 18, 9:30 PM</p>
-          <p class="event-location">ONLINE EVENT - Attend Anywhere</p>
-        </div>
-      </div>
-
-      <div class="event-card">
-        <img src="../resources/event_2_img_updated.png" alt="Event Image" />
-        <div class="event-info">
-          <span class="event-tag">FREE</span>
-          <h3>BestSeller Book Bootcamp - Write, Market & Publish</h3>
-          <p class="event-date">Saturday, March 18, 9:30 PM</p>
-          <p class="event-location">ONLINE EVENT - Attend Anywhere</p>
-        </div>
-      </div>
-
-      <div class="event-card">
-        <img src="../resources/event_4_img_updated.png" alt="Event Image" />
-        <div class="event-info">
-          <span class="event-tag">FREE</span>
-          <h3>BestSeller Book Bootcamp - Write, Market & Publish</h3>
-          <p class="event-date">Saturday, March 18, 9:30 PM</p>
-          <p class="event-location">ONLINE EVENT - Attend Anywhere</p>
-        </div>
-      </div>
+      <?php if ($upcoming_conferences_result->num_rows > 0): ?>
+        <?php while ($event = $upcoming_conferences_result->fetch_assoc()): ?>
+          <div class="event-card">
+            <img src="../resources/<?php echo htmlspecialchars($event['image']); ?>" alt="Event Image" />
+            <div class="event-info">
+              <span class="event-tag">
+                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - $" . htmlspecialchars($event['price']); ?>
+              </span>
+              <h3><?php echo htmlspecialchars($event['title']); ?></h3>
+              <p class="event-date">
+                <?php echo date("l, F j, g:i A", strtotime($event['start_date'] . ' ' . $event['start_time'])); ?>
+              </p>
+              <p class="event-location"><?php echo htmlspecialchars($event['venue']); ?></p>
+              <p class="event-des"><?php echo htmlspecialchars($event['description']); ?></p>
+            </div>
+          </div>
+        <?php endwhile; ?>
+      <?php else: ?>
+        <p class="no-events">No upcoming conferences available.</p>
+      <?php endif; ?>
     </div>
-
   </section>
 
 
+  <!-- Past conferences -->
   <section class="events">
     <div class="events-header">
       <h2>Past <span class="highlight">Conferences</span></h2>
     </div>
-
     <div class="event-cards">
-      <div class="event-card">
-        <img src="../resources/event_1_img_updated.png" alt="Event Image" />
-        <div class="event-info">
-          <span class="event-tag">FREE</span>
-          <h3>BestSeller Book Bootcamp - Write, Market & Publish</h3>
-          <p class="event-date">Saturday, March 18, 9:30 PM</p>
-          <p class="event-location">ONLINE EVENT - Attend Anywhere</p>
-        </div>
-      </div>
-
-      <div class="event-card">
-        <img src="../resources/event_2_img_updated.png" alt="Event Image" />
-        <div class="event-info">
-          <span class="event-tag">FREE</span>
-          <h3>BestSeller Book Bootcamp - Write, Market & Publish</h3>
-          <p class="event-date">Saturday, March 18, 9:30 PM</p>
-          <p class="event-location">ONLINE EVENT - Attend Anywhere</p>
-        </div>
-      </div>
-
-      <div class="event-card">
-        <img src="../resources/event_4_img_updated.png" alt="Event Image" />
-        <div class="event-info">
-          <span class="event-tag">FREE</span>
-          <h3>BestSeller Book Bootcamp - Write, Market & Publish</h3>
-          <p class="event-date">Saturday, March 18, 9:30 PM</p>
-          <p class="event-location">ONLINE EVENT - Attend Anywhere</p>
-        </div>
-      </div>
+      <?php if ($past_conferences_result->num_rows > 0): ?>
+        <?php while ($event = $past_conferences_result->fetch_assoc()): ?>
+          <div class="event-card">
+            <img src="../resources/<?php echo htmlspecialchars($event['image']); ?>" alt="Event Image" />
+            <div class="event-info">
+              <span class="event-tag">
+                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - $" . htmlspecialchars($event['price']); ?>
+              </span>
+              <h3><?php echo htmlspecialchars($event['title']); ?></h3>
+              <p class="event-date">
+                <?php echo date("l, F j, g:i A", strtotime($event['start_date'] . ' ' . $event['start_time'])); ?>
+              </p>
+              <p class="event-location"><?php echo htmlspecialchars($event['venue']); ?></p>
+              <p class="event-des"><?php echo htmlspecialchars($event['description']); ?></p>
+            </div>
+          </div>
+        <?php endwhile; ?>
+      <?php else: ?>
+        <p class="no-events">No past conferences available.</p>
+      <?php endif; ?>
     </div>
-
   </section>
-
 
 
   <footer class="footer">
@@ -264,18 +201,14 @@ $is_logged_in = isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'];
         <div class="footer-copyright">
           Non Copyrighted © 2023 Upload by EventHive
         </div>
-        <div class="footer-logo">
-          <svg width="124" height="31" viewBox="0 0 124 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-          </svg>
-        </div>
-        <div class="footer-languages">
-          <button class="language-button">English</button>
-          <button class="language-button">French</button>
-          <button class="language-button">Hindi</button>
-        </div>
       </div>
     </div>
   </footer>
+
 </body>
 
 </html>
+
+<?php
+$conn->close();
+?>

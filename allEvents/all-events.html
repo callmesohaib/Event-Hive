@@ -39,7 +39,10 @@
 
     <section class="events">
       <div class="events-header">
-        <h2>All <span class="highlight">Events</span></h2>
+        <h2>
+          All <span class="highlight">Events</span> &
+          <span class="highlight">Conferences</span>
+        </h2>
       </div>
 
       <div class="event-cards"></div>
@@ -116,6 +119,8 @@
 
             events.forEach((event) => {
               const card = document.createElement("div");
+              const eventTag = event.type === "paid" ? `${event.type} - $${event.price}` : "free";
+
               card.classList.add("event-card");
 
               card.innerHTML = `
@@ -123,12 +128,13 @@
                 event.title
               }">
           <div class="event-info">
-              <span class="event-tag">${event.type || "Free"}</span>
+                <span class="event-tag">${eventTag}</span>
               <h3>${event.title}</h3>
               <p class="event-date">${event.start_date} - ${event.end_date} | ${
                 event.start_time
               } - ${event.end_time}</p>
               <p class="event-location">${event.venue}</p>
+              <p class="event-description">${event.description}</p>
              <button class="register-btn" data-title="${event.title}" 
   data-type="${event.type}" data-start="${event.start_date} ${
                 event.start_time

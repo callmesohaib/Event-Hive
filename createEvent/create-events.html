@@ -21,7 +21,14 @@
 
       <form id="createEventForm" enctype="multipart/form-data">
         <div class="form-group">
-          <label for="eventTitle">Event Title</label>
+          <label for="eventCategory">Category</label>
+          <select id="eventCategory" name="eventCategory">
+            <option value="event">Event</option>
+            <option value="conference">Conference</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="eventTitle">Title</label>
           <input
             type="text"
             id="eventTitle"
@@ -32,7 +39,7 @@
         </div>
 
         <div class="form-group">
-          <label for="eventVenue">Event Venue</label>
+          <label for="eventVenue">Venue</label>
           <input
             type="text"
             id="eventVenue"

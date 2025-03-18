@@ -15,7 +15,7 @@ try {
         echo json_encode(["status" => "error", "message" => "Database connection failed."]);
         exit();
     }
-
+    $category = $_POST["eventCategory"];
     $title = trim($_POST["eventTitle"]);
     $venue = trim($_POST["eventVenue"]);
     $startTime = $_POST["startTime"];
@@ -26,7 +26,7 @@ try {
     $price = ($type === "paid" && isset($_POST["eventPrice"])) ? floatval($_POST["eventPrice"]) : 0.00;
     $description = trim($_POST["eventDescription"]);
 
-    if (empty($title) || empty($venue) || empty($startTime) || empty($endTime) || empty($startDate) || empty($endDate) || empty($description)) {
+    if (empty($category) || empty($title) || empty($venue) || empty($startTime) || empty($endTime) || empty($startDate) || empty($endDate) || empty($description)) {
         echo json_encode(["status" => "error", "message" => "All fields are required."]);
         exit();
     }
@@ -49,14 +49,14 @@ try {
     }
 
     // Insert into database
-    $stmt = $conn->prepare("INSERT INTO events (title, venue, start_time, end_time, start_date, end_date, type, price, description, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO events (category, title, venue, start_time, end_time, start_date, end_date, type, price, description, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     if (!$stmt) {
         echo json_encode(["status" => "error", "message" => "Prepare statement failed: " . $conn->error]);
         exit();
     }
 
-    $stmt->bind_param("sssssssdss", $title, $venue, $startTime, $endTime, $startDate, $endDate, $type, $price, $description, $imagePath);
+    $stmt->bind_param("ssssssssdss", $category, $title, $venue, $startTime, $endTime, $startDate, $endDate, $type, $price, $description, $imagePath);
 
     if ($stmt->execute()) {
         echo json_encode(["status" => "success", "message" => "Event created successfully!"]);

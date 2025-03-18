@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Event Management</title>
+    <link rel="stylesheet" href="admin-dashboard.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="header">
+        <h1>Event<span class="header-text">Hive</span></h1>
+        <nav>
+            <a href="create-events.html" class="signup">Create an Event</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <h2>All Events</h2>
+
+        <!-- Event Table -->
+        <div class="event-table">
+            <div class="event-row header-row">
+                <div>Event ID</div>
+                <div>Event Name</div>
+                <div>Venue</div>
+                <div>Start Date & Time</div>
+                <div>Actions</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const eventTable = document.querySelector(".event-table");
+
+            // Retrieve events from localStorage
+            let events = JSON.parse(localStorage.getItem("events")) || [];
+
+            // Assign a unique ID (if not already present)
+            events = events.map((event, index) => ({
+                id: index + 1,  // Assigning incremental IDs
+                ...event
+            }));
+
+            // Populate the event table dynamically
+            events.forEach(event => {
+                const eventRow = document.createElement("div");
+                eventRow.classList.add("event-row");
+                eventRow.innerHTML = `
+                    <div>#${event.id}</div>
+                    <div>${event.title}</div>
+                    <div>${event.venue}</div>
+                    <div>${event.startDate} | ${event.startTime}</div>
+                    <div>
+                        <button class="edit-btn" onclick="editEvent(${event.id})">Edit</button>
+                        <button class="delete-btn" onclick="deleteEvent(${event.id})">Delete</button>
+                    </div>
+                `;
+                eventTable.appendChild(eventRow);
+            });
+        });
+
+        function editEvent(id) {
+            alert("Edit event with ID: " + id);
+            // Implement actual edit functionality here
+        }
+
+        function deleteEvent(id) {
+            if (confirm("Are you sure you want to delete this event?")) {
+                alert("Deleted event with ID: " + id);
+                // Implement actual delete functionality here
+            }
+        }
+    </script>
+
+</body>
+
+</html>

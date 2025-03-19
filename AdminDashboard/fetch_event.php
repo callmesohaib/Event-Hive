@@ -2,15 +2,15 @@
 header('Content-Type: application/json');
 include '../dbConnection.php';
 
-if (!isset($_GET['title']) || empty($_GET['title'])) {
-    echo json_encode(["status" => "error", "message" => "Missing event title"]);
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    echo json_encode(["status" => "error", "message" => "Missing event id"]);
     exit;
 }
 
-$title = trim($_GET['title']);
+$id = trim($_GET['id']);
 
-$stmt = $conn->prepare("SELECT category ,title, venue, start_date, start_time, end_date, type, price, description, image FROM events WHERE title = ?");
-$stmt->bind_param("s", $title);
+$stmt = $conn->prepare("SELECT category ,title, venue, start_date, start_time, end_time, end_date, type, price, description, image FROM events WHERE id = ?");
+$stmt->bind_param("s", $id);
 $stmt->execute();
 $result = $stmt->get_result();
 

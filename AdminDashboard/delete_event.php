@@ -10,23 +10,39 @@ if (!isset($_SESSION['is_logged_in']) || !$_SESSION['is_logged_in'] || $_SESSION
 }
 
 $data = json_decode(file_get_contents("php://input"), true);
-if (!isset($data['title']) || empty($data['title'])) {
-    echo json_encode(["error" => "Invalid request: Missing event title"]);
+if (!isset($data['id']) || empty($data['id']) || !is_numeric($data['id'])) {
+    echo json_encode(["error" => "Invalid request: Missing or invalid event ID"]);
     exit;
 }
 
-$eventTitle = trim($data['title']);
+$eventId = intval($data['id']); // Ensure it's an integer
 
-$conn->begin_transaction(); 
+$conn->begin_transaction();
 
 try {
+    // Fetch event title using event ID
+    $fetchTitle = $conn->prepare("SELECT title FROM events WHERE id = ?");
+    $fetchTitle->bind_param("i", $eventId);
+    $fetchTitle->execute();
+    $result = $fetchTitle->get_result();
+    $fetchTitle->close();
+
+    if ($result->num_rows === 0) {
+        throw new Exception("Event not found");
+    }
+
+    $row = $result->fetch_assoc();
+    $eventTitle = $row['title'];
+
+    // Delete registrations linked to this event title
     $deleteRegistrations = $conn->prepare("DELETE FROM event_registrations WHERE event_title = ?");
     $deleteRegistrations->bind_param("s", $eventTitle);
     $deleteRegistrations->execute();
     $deleteRegistrations->close();
 
-    $deleteEvent = $conn->prepare("DELETE FROM events WHERE title = ?");
-    $deleteEvent->bind_param("s", $eventTitle);
+    // Delete the event itself
+    $deleteEvent = $conn->prepare("DELETE FROM events WHERE id = ?");
+    $deleteEvent->bind_param("i", $eventId);
     $deleteEvent->execute();
 
     if ($deleteEvent->affected_rows === 0) {
@@ -35,7 +51,7 @@ try {
 
     $deleteEvent->close();
 
-    $conn->commit(); 
+    $conn->commit();
 
     echo json_encode(["success" => true]);
 } catch (Exception $e) {

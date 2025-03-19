@@ -77,11 +77,11 @@
                         <div>${event.start_date} | ${event.start_time}</div>
                         <div>
                             <button class="edit-btn" onclick="editEvent('${
-                              event.title
+                              event.id
                             }')">Edit</button>
 
                             <button class="delete-btn" onclick="deleteEvent('${
-                              event.title
+                              event.id
                             }')">Delete</button>
                         </div>
                     `;
@@ -91,16 +91,16 @@
           .catch((error) => console.error("Error fetching events:", error));
       }
 
-      function editEvent(title) {
-        window.location.href = `/Event-Hive/createEvent/create-events.html?title=${title}`;
+      function editEvent(id) {
+        window.location.href = `/Event-Hive/createEvent/create-events.html?id=${id}`;
       }
 
-      function deleteEvent(title) {
+      function deleteEvent(id) {
         if (confirm("Are you sure you want to delete this event?")) {
           fetch("../AdminDashboard/delete_event.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ title: title }),
+            body: JSON.stringify({ id: id }),
           })
             .then((response) => response.json())
             .then((data) => {

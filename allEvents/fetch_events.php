@@ -5,7 +5,7 @@ session_start();
 $is_logged_in = isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'] === true;
 $user_email = $is_logged_in ? $_SESSION['email'] : null;
 
-$sql = "SELECT title, venue, start_time, end_time, start_date, end_date, type, price, description, image FROM events";
+$sql = "SELECT id, title, venue, start_time, end_time, start_date, end_date, type, price, description, image FROM events";
 $result = $conn->query($sql);
 
 $events = [];

@@ -123,7 +123,8 @@
     </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", async function () {
+        // Check user session
         fetch("../check_session.php")
           .then((response) => response.json())
           .then((data) => {
@@ -135,128 +136,128 @@
             console.error("Error fetching session:", error);
             window.location.href = "/Event-Hive/Sign_in/signin.html";
           });
-      });
-      document
-        .getElementById("eventType")
-        .addEventListener("change", function () {
+    
+        // Handle event type change
+        document.getElementById("eventType").addEventListener("change", function () {
           const priceInput = document.getElementById("eventPrice");
-          priceInput.disabled = this.value === "free";
-          if (this.value === "free") priceInput.value = "";
+          priceInput.disabled = this.value !== "paid"; // Enable for "paid", disable for "free"
+          if (this.value === "free") priceInput.value = ""; // Clear value for free events
         });
-
-      document
-        .getElementById("createEventForm")
-        .addEventListener("submit", async function (event) {
-          event.preventDefault();
-
-          const formData = new FormData(this); 
+    
+        // Get event ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventId = urlParams.get("id");
+    
+        if (eventId) {
+          // Update mode
+          document.querySelector(".title").innerHTML = "Update Event";
+          document.querySelector("button").textContent = "Update Event";
+    
           try {
-            const response = await fetch("create_event.php", {
-              method: "POST",
-              body: formData,
-            });
-
-            const result = await response.json(); 
-
-            if (result.status === "success") {
-              alert(result.message);
-              window.location.href = "/Event-Hive/allEvents/all-events.html"; 
+            // Fetch event data
+            const response = await fetch(
+              `../AdminDashboard/fetch_event.php?id=${encodeURIComponent(eventId)}`
+            );
+            const textResponse = await response.text();
+            console.log("Raw Response:", textResponse);
+    
+            let eventData;
+            try {
+              eventData = JSON.parse(textResponse);
+            } catch (error) {
+              console.error("Invalid JSON Response:", textResponse);
+              return;
+            }
+    
+            if (eventData && eventData.status === "success") {
+              populateForm(eventData.event);
             } else {
-              alert(result.message); 
+              alert("Event not found.");
             }
           } catch (error) {
-            console.error("Error:", error);
-            alert("Something went wrong. Please try again.");
+            console.error("Error fetching event data:", error);
+            alert("Failed to load event details.");
+          }
+        }
+    
+        // Attach the correct submit handler based on mode
+        const form = document.getElementById("createEventForm");
+        form.addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const formData = new FormData(this);
+    
+          if (eventId) {
+            // Update event
+            formData.append("id", eventId);
+    
+            try {
+              const response = await fetch("../AdminDashboard/update_event.php", {
+                method: "POST",
+                body: formData,
+              });
+              const result = await response.json();
+              alert(result.message);
+              if (result.status === "success") {
+                window.location.href = "/Event-Hive/allEvents/all-events.html";
+              }
+            } catch (error) {
+              console.error("Error updating event:", error);
+              alert("Failed to update event.");
+            }
+          } else {
+            // Create event
+            try {
+              const response = await fetch("create_event.php", {
+                method: "POST",
+                body: formData,
+              });
+              const result = await response.json();
+              alert(result.message);
+              if (result.status === "success") {
+                window.location.href = "/Event-Hive/allEvents/all-events.html";
+              }
+            } catch (error) {
+              console.error("Error creating event:", error);
+              alert("Something went wrong.");
+            }
           }
         });
-
-        document.addEventListener("DOMContentLoaded", async function () {
-  const urlParams = new URLSearchParams(window.location.search);
-  const eventTitle = urlParams.get("title");
-  
-  if (eventTitle) {
-    try {
-      const response = await fetch(`../AdminDashboard/fetch_event.php?title=${encodeURIComponent(eventTitle)}`);
-      const textResponse = await response.text();
-
-      
-      let eventData;
-      try {
-        eventData = JSON.parse(textResponse);
-      } catch (error) {
-        console.error("Invalid JSON Response:", textResponse);
-      }
-      
-      if (eventData && eventData.status === "success") {
-        populateForm(eventData.event);
-      } else {
-        alert("Event not found.");
-        window.location.href = "/Event-Hive/AdminDashboard/admin-dashboard.html";
-      }
-    } catch (error) {
-      console.error("Error fetching event data:", error);
-      alert("Failed to load event details.");
-    }
-  }
-
-  function populateForm(event) {
-    document.getElementById("eventCategory").value = event.category || "";
-    document.getElementById("eventTitle").value = event.title || "";
-    document.getElementById("eventVenue").value = event.venue || "";
-    document.getElementById("startTime").value = event.start_time?.slice(0, 5) || "00:00";
-    document.getElementById("endTime").value = event.end_time?.slice(0, 5) || "00:00";
-    document.getElementById("startDate").value = event.start_date || "";
-    document.getElementById("endDate").value = event.end_date || "";
-    document.getElementById("eventType").value = event.type || "";
-    document.getElementById("eventPrice").value = event.type === "paid" ? event.price || "0.00" : "";
-    document.getElementById("eventDescription").value = event.description || "";
     
-    if (event.image) {
-      const imagePreview = document.createElement("img");
-      imagePreview.src = event.image;
-      imagePreview.style.maxWidth = "200px";
-      document.getElementById("eventImage").parentElement.appendChild(imagePreview);
-    }
-  }
-
-  document.getElementById("createEventForm").addEventListener("submit", async function (event) {
-    event.preventDefault();
-    const formData = new FormData(this);
+        // Populate form with event data
+        function populateForm(event) {
+          document.getElementById("eventCategory").value = event.category || "";
+          document.getElementById("eventTitle").value = event.title || "";
+          document.getElementById("eventVenue").value = event.venue || "";
+          document.getElementById("startTime").value =
+            event.start_time?.slice(0, 5) || "00:00";
+          document.getElementById("endTime").value =
+            event.end_time?.slice(0, 5) || "00:00";
+          document.getElementById("startDate").value = event.start_date || "";
+          document.getElementById("endDate").value = event.end_date || "";
+          document.getElementById("eventType").value = event.type || "";
     
-    if (eventTitle) {
-      formData.append("oldTitle", eventTitle);
-      try {
-        const response = await fetch("../AdminDashboard/update_event.php", { method: "POST", body: formData });
-        const result = await response.json();
-        alert(result.message);
-        if (result.status === "success") {
-          window.location.href = "/Event-Hive/allEvents/all-events.html";
+          // Enable/disable charges input based on event type
+          const priceInput = document.getElementById("eventPrice");
+          if (event.type === "paid") {
+            priceInput.disabled = false; // Enable for paid events
+            priceInput.value = event.price || "0.00";
+          } else {
+            priceInput.disabled = true; // Disable for free events
+            priceInput.value = "";
+          }
+    
+          document.getElementById("eventDescription").value = event.description || "";
+    
+          if (event.image) {
+            const imagePreview = document.createElement("img");
+            imagePreview.src = event.image;
+            imagePreview.style.maxWidth = "200px";
+            document
+              .getElementById("eventImage")
+              .parentElement.appendChild(imagePreview);
+          }
         }
-      } catch (error) {
-        console.error("Error updating event:", error);
-        alert("Failed to update event.");
-      }
-    } else {
-      try {
-        const response = await fetch("create_event.php", { method: "POST", body: formData });
-        const result = await response.json();
-        alert(result.message);
-        if (result.status === "success") {
-          window.location.href = "/Event-Hive/allEvents/all-events.html";
-        }
-      } catch (error) {
-        console.error("Error creating event:", error);
-        alert("Something went wrong.");
-      }
-    }
-  });
-
-  document.getElementById("eventType").addEventListener("change", function () {
-    const eventPriceInput = document.getElementById("eventPrice");
-    eventPriceInput.disabled = this.value !== "paid";
-  });
-});
-
+      });
     </script>
   </body>
 </html>

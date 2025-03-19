@@ -32,6 +32,7 @@ $past_conferences_result = $conn->query($past_conferences_query);
     <h1>Event<span class="header-text">Hive</span></h1>
     <nav>
       <?php if ($is_logged_in): ?>
+        <a href="../allEvents/all-events.html">All Events</a>
         <a href="../logout.php" class="signup">Logout</a>
       <?php else: ?>
         <a href="../Sign_in/signin.html">Login</a>
@@ -118,7 +119,7 @@ $past_conferences_result = $conn->query($past_conferences_query);
       </div>
     </div>
   </section>
-  
+
   <!-- Upcoming Conferences -->
   <section class="events">
     <div class="events-header">
@@ -191,7 +192,7 @@ $past_conferences_result = $conn->query($past_conferences_query);
       </div>
       <div class="footer-links">
         <a href="#" class="footer-link">Home</a>
-        <a href="../allEvents/all-events.html" class="footer-link">About</a>
+        <a href="#" class="footer-link">About</a>
         <a href="#" class="footer-link">Services</a>
         <a href="#" class="footer-link">Get in touch</a>
         <a href="#" class="footer-link">FAQs</a>

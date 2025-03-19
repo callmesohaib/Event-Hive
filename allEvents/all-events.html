@@ -9,7 +9,9 @@
 
   <body>
     <header class="header">
-      <h1>Event<span class="header-text">Hive</span></h1>
+      <a href="../Home/home.php" style="cursor: pointer; text-decoration: none">
+        <h1>Event<span class="header-text">Hive</span></h1>
+      </a>
       <nav>
         <a href="../logout.php" class="signup">Logout</a>
       </nav>
@@ -119,7 +121,10 @@
 
             events.forEach((event) => {
               const card = document.createElement("div");
-              const eventTag = event.type === "paid" ? `${event.type} - $${event.price}` : "free";
+              const eventTag =
+                event.type === "paid"
+                  ? `${event.type} - $${event.price}`
+                  : "free";
 
               card.classList.add("event-card");
 

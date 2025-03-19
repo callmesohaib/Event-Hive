@@ -24,16 +24,24 @@ if ($is_logged_in && $user_email) {
     $stmt->close();
 }
 
-
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+        $event_title = $row['title'];
+        $reg_count_sql = "SELECT COUNT(*) as registration_count FROM event_registrations WHERE event_title = ?";
+        $reg_stmt = $conn->prepare($reg_count_sql);
+        $reg_stmt->bind_param("s", $event_title);
+        $reg_stmt->execute();
+        $reg_count_result = $reg_stmt->get_result();
+        $reg_count_row = $reg_count_result->fetch_assoc();
+        $row['registration'] = $reg_count_row['registration_count'];
+        $reg_stmt->close();
+
         $row['is_registered'] = in_array($row['title'], $registered_events);
         $events[] = $row;
     }
 }
 
 $conn->close();
-
 
 header('Content-Type: application/json');
 echo json_encode($events);

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User - Event Management</title>
+    <link rel="stylesheet" href="user-dashboard.css" />
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <header class="header">
+      <a href="../Home/home.php" style="cursor: pointer; text-decoration: none">
+        <h1>Event<span class="header-text">Hive</span></h1>
+      </a>
+      <nav>
+        <a href="../allEvents/all-events.html" class="signup">All Events</a>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+      <h2>All Events</h2>
+
+      <!-- Event Table -->
+      <div class="event-table">
+        <div class="event-row header-row">
+          <div>Event Name</div>
+          <div>Venue</div>
+          <div>Start Date & Time</div>
+          <div>Type</div>
+          <!-- Newly Added Column -->
+        </div>
+      </div>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const eventTable = document.querySelector(".event-table");
+
+        // Retrieve events from localStorage
+        let events = JSON.parse(localStorage.getItem("events")) || [];
+
+        // Populate the event table dynamically
+        events.forEach((event) => {
+          const eventRow = document.createElement("div");
+          eventRow.classList.add("event-row");
+
+          // Determine event type (Paid - {price} or Free)
+          let eventType =
+            event.type === "paid" ? `Paid - $${event.price}` : "Free";
+
+          eventRow.innerHTML = `
+                    <div>${event.title}</div>
+                    <div>${event.venue}</div>
+                    <div>${event.startDate} | ${event.startTime}</div>
+                    <div>${eventType}</div>
+                `;
+
+          eventTable.appendChild(eventRow);
+        });
+      });
+    </script>
+  </body>
+</html>

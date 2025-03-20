@@ -44,7 +44,7 @@ if ($email === "admin@gmail.com") {
     $_SESSION['is_logged_in'] = true;
     $_SESSION['role'] = "user"; // Store user role
 
-    echo json_encode(["success" => true, "redirect" => "/Event-Hive/Home/home.php"]);
+    echo json_encode(["success" => true, "redirect" => "/Event-Hive/userDashboard/user-dashboard.html"]);
 } else {
     echo json_encode(["success" => false, "message" => "Invalid email or password"]);
 }

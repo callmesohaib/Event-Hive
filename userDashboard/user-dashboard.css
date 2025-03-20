@@ -1,0 +1,90 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+  }
+  
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px 53px;
+    padding: 15px 0;
+  }
+  
+  .header h1 {
+    font-size: 40px;
+    font-weight: 700;
+    color: black;
+  }
+  
+  .header h1 span {
+    color: #7848f4;
+  }
+  
+  .header nav {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+  }
+  
+  .header nav a {
+    color: #131315;
+    text-decoration: none;
+    font-size: 16px;
+  }
+  
+  .header nav .signup {
+    background: #7848f4;
+    padding: 10px 30px;
+    border-radius: 5px;
+    color: white;
+  }
+  
+  /* Main Content */
+  .container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 10px auto;
+    text-align: center;
+  }
+  
+  .container h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Event Table (Grid Layout) */
+  .event-table {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .event-row {
+    display: contents;
+  }
+  
+  .event-row div {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .header-row div {
+    font-weight: bold;
+    background: #7848f4;
+    color: white;
+    padding: 14px;
+    border-radius: 7px;
+    align-items: center;
+  }
+  

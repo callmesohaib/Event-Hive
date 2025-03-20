@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dropdown Menu</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="script.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        height: 100vh;
+        background-color: #f9f9f9;
+        padding-right: 20px;
+      }
+
+      .dropdown-container {
+        position: relative;
+      }
+
+      .dropdown-button {
+        display: flex;
+        align-items: center;
+        background-color: white;
+        border: 1px solid #bababa;
+        border-radius: 20px;
+        padding: 5px 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .dropdown-button:hover {
+        background-color: #f0f0f0;
+      }
+
+      .avatar {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+      }
+
+      .arrow {
+        margin-left: 8px;
+        font-size: 14px;
+        transition: transform 0.3s;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        right: 0;
+        top: 40px;
+        width: 180px;
+        background: white;
+        border: 1px solid #cecece;
+        border-radius: 8px;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+
+      .dropdown-header {
+        padding: 10px;
+        border-bottom: 1px solid #cecece;
+        text-align: left;
+      }
+
+      .user-name {
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      .user-email {
+        font-size: 12px;
+        color: gray;
+      }
+
+      .dropdown-links {
+        list-style: none;
+      }
+
+      .dropdown-links li {
+        padding: 10px;
+        text-align: left;
+      }
+
+      .dropdown-links li a {
+        text-decoration: none;
+        color: black;
+        display: block;
+      }
+
+      .dropdown-links li a:hover {
+        background-color: #f0f0f0;
+      }
+
+      .dropdown-menu.show {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dropdown-container">
+      <button id="dropdownButton" class="dropdown-button">
+        <img src="./images/avatar.png" class="avatar" alt="User Avatar" />
+        <span class="arrow">&#9662;</span>
+      </button>
+
+      <div id="dropdownMenu" class="dropdown-menu">
+        <div class="dropdown-header">
+          <p class="user-name">John Doe</p>
+          <p class="user-email">johndoe@example.com</p>
+        </div>
+        <ul class="dropdown-links">
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Settings</a></li>
+          <li><a href="#">Earnings</a></li>
+          <li><a href="#" id="logout">Sign out</a></li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const dropdownButton = document.getElementById("dropdownButton");
+      const dropdownMenu = document.getElementById("dropdownMenu");
+
+      dropdownButton.addEventListener("click", function () {
+        dropdownMenu.classList.toggle("show");
+      });
+
+      // Close the dropdown if clicked outside
+      document.addEventListener("click", function (event) {
+        if (
+          !dropdownButton.contains(event.target) &&
+          !dropdownMenu.contains(event.target)
+        ) {
+          dropdownMenu.classList.remove("show");
+        }
+      });
+
+      document.getElementById("logout").addEventListener("click", function () {
+        alert("Logged out!");
+      });
+    });
+  </script>
+</html>

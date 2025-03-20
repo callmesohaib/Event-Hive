@@ -32,8 +32,26 @@ $past_conferences_result = $conn->query($past_conferences_query);
     <h1>Event<span class="header-text">Hive</span></h1>
     <nav>
       <?php if ($is_logged_in): ?>
-        <a href="../allEvents/all-events.html">All Events</a>
-        <a href="../logout.php" class="signup">Logout</a>
+        <a href="../allEvents/all-events.html" class="signup">All Events</a>
+        <div class="dropdown-container">
+          <button id="dropdownButton" class="dropdown-button">
+            <img src="../resources/avatar.png" class="avatar" alt="User Avatar" />
+            <span class="arrow">&#9662;</span>
+          </button>
+
+          <div id="dropdownMenu" class="dropdown-menu">
+            <div class="dropdown-header">
+              <p class="user-name">John Doe</p>
+              <p class="user-email">johndoe@example.com</p>
+            </div>
+            <ul class="dropdown-links">
+              <li><a href="../userDashboard/user-dashboard.html">Dashboard</a></li>
+              <li><a href="#">Settings</a></li>
+              <li><a href="#">Earnings</a></li>
+              <li><a href="#" id="logout">Sign out</a></li>
+            </ul>
+          </div>
+        </div>
       <?php else: ?>
         <a href="../Sign_in/signin.html">Login</a>
         <a href="../Sign_up/signup.html" class="signup">Signup</a>
@@ -207,6 +225,23 @@ $past_conferences_result = $conn->query($past_conferences_query);
   </footer>
 
 </body>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dropdownButton = document.getElementById("dropdownButton");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+
+    dropdownButton.addEventListener("click", function () {
+      dropdownMenu.classList.toggle("show");
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (event) {
+      if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+        dropdownMenu.classList.remove("show");
+      }
+    });
+  });
+</script>
 
 </html>
 

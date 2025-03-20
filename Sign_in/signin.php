@@ -33,6 +33,7 @@ if ($email === "admin@gmail.com") {
     $_SESSION['user_id'] = $user['u_id'];
     $_SESSION['name'] = $user['name'];
     $_SESSION['email'] = $user['email'];
+    
     $_SESSION['is_logged_in'] = true;
     $_SESSION['role'] = "admin"; // Store user role
 
@@ -44,7 +45,7 @@ if ($email === "admin@gmail.com") {
     $_SESSION['is_logged_in'] = true;
     $_SESSION['role'] = "user"; // Store user role
 
-    echo json_encode(["success" => true, "redirect" => "/Event-Hive/userDashboard/user-dashboard.html"]);
+    echo json_encode(["success" => true, "redirect" => "/Event-Hive/Home/home.php"]);
 } else {
     echo json_encode(["success" => false, "message" => "Invalid email or password"]);
 }

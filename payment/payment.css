@@ -1,0 +1,126 @@
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}
+
+.payment-container {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.balance-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.balance-section h2 {
+  font-size: 18px;
+  color: #333;
+}
+
+.balance-section p {
+  font-size: 24px;
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.payment-method-section h2 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.payment-methods {
+  display: flex;
+  justify-content: space-between;
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  background-color: #f9f9f9;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  flex: 1;
+  margin: 0 5px;
+  transition: border 0.3s;
+}
+
+.payment-method input {
+  display: none;
+}
+
+.payment-method .method-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.payment-method img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 5px;
+}
+
+.payment-method span {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Highlight selected payment method */
+.payment-method.selected {
+  border-color: #4caf50;
+}
+
+.payment-details-section h2 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.pay-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4caf50;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.pay-button:hover {
+  background-color: #45a049;
+}

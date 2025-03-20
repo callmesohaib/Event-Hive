@@ -10,7 +10,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 20px 50px;
+  margin: 10px 50px;
 }
 
 .header h1 {
@@ -186,7 +186,7 @@ h2 .highlight {
 
 .event-description {
   font-size: 14px;
- color: black;
+  color: black;
   margin-top: 10px;
 }
 

@@ -45,10 +45,8 @@ $past_conferences_result = $conn->query($past_conferences_query);
               <p class="user-email">johndoe@example.com</p>
             </div>
             <ul class="dropdown-links">
-              <li><a href="../userDashboard/user-dashboard.html">Dashboard</a></li>
-              <li><a href="#">Settings</a></li>
-              <li><a href="#">Earnings</a></li>
-              <li><a href="#" id="logout">Sign out</a></li>
+              <li><a href="../userDashboard/user-dashboard.php">Dashboard</a></li>
+              <li><a href="../logout.php" id="logout">Sign out</a></li>
             </ul>
           </div>
         </div>

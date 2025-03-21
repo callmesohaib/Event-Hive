@@ -86,7 +86,7 @@ $past_conferences_result = $conn->query($past_conferences_query);
             <img src="../resources/<?php echo htmlspecialchars($event['image']); ?>" alt="Event Image" />
             <div class="event-info">
               <span class="event-tag">
-                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - $" . htmlspecialchars($event['price']); ?>
+                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - " . htmlspecialchars($event['price'])." OMR" ?>
               </span>
               <h3><?php echo htmlspecialchars($event['title']); ?></h3>
               <p class="event-date">
@@ -115,7 +115,7 @@ $past_conferences_result = $conn->query($past_conferences_query);
             <img src="../resources/<?php echo htmlspecialchars($event['image']); ?>" alt="Event Image" />
             <div class="event-info">
               <span class="event-tag">
-                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - $" . htmlspecialchars($event['price']); ?>
+                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - " . htmlspecialchars($event['price']) ." OMR" ?>
               </span>
               <h3><?php echo htmlspecialchars($event['title']); ?></h3>
               <p class="event-date">
@@ -160,7 +160,7 @@ $past_conferences_result = $conn->query($past_conferences_query);
             <img src="../resources/<?php echo htmlspecialchars($event['image']); ?>" alt="Event Image" />
             <div class="event-info">
               <span class="event-tag">
-                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - $" . htmlspecialchars($event['price']); ?>
+                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - " . htmlspecialchars($event['price'])." OMR" ?>
               </span>
               <h3><?php echo htmlspecialchars($event['title']); ?></h3>
               <p class="event-date">
@@ -190,7 +190,7 @@ $past_conferences_result = $conn->query($past_conferences_query);
             <img src="../resources/<?php echo htmlspecialchars($event['image']); ?>" alt="Event Image" />
             <div class="event-info">
               <span class="event-tag">
-                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - $" . htmlspecialchars($event['price']); ?>
+                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - " . htmlspecialchars($event['price'])." OMR" ?>
               </span>
               <h3><?php echo htmlspecialchars($event['title']); ?></h3>
               <p class="event-date">

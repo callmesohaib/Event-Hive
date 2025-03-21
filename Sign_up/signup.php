@@ -34,9 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode(["status" => "error", "message" => "Email already registered."]);
         exit;
     }
+    $bonus = 1000;
 
-    $stmt = $conn->prepare("INSERT INTO user_tbl (name, email, password) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $name, $email, $hashed_password);
+    $stmt = $conn->prepare("INSERT INTO user_tbl (name, email, password, bonus) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $name, $email, $hashed_password, $bonus);
 
     if ($stmt->execute()) {
         echo json_encode(["status" => "success", "message" => "Registration successful. Redirecting to login..."]);

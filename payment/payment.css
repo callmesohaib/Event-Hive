@@ -58,6 +58,10 @@ body {
   transition: border 0.3s;
 }
 
+.payment-method.selected {
+  border-color: #4caf50;
+}
+
 .payment-method input {
   display: none;
 }
@@ -80,10 +84,6 @@ body {
   color: #333;
 }
 
-/* Highlight selected payment method */
-.payment-method.selected {
-  border-color: #4caf50;
-}
 
 .payment-details-section h2 {
   font-size: 18px;

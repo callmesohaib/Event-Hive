@@ -32,8 +32,9 @@ if (!$user) {
 if ($email === "admin@gmail.com") {
     $_SESSION['user_id'] = $user['u_id'];
     $_SESSION['name'] = $user['name'];
+    $_SESSION['bonus'] = $user['bonus'];
     $_SESSION['email'] = $user['email'];
-    
+
     $_SESSION['is_logged_in'] = true;
     $_SESSION['role'] = "admin"; // Store user role
 
@@ -42,6 +43,7 @@ if ($email === "admin@gmail.com") {
     $_SESSION['user_id'] = $user['u_id'];
     $_SESSION['name'] = $user['name'];
     $_SESSION['email'] = $user['email'];
+    $_SESSION['bonus'] = $user['bonus'];
     $_SESSION['is_logged_in'] = true;
     $_SESSION['role'] = "user"; // Store user role
 

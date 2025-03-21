@@ -28,7 +28,7 @@
           </div>
 
           <div class="form-group">
-            <label for="charges">Total Charges $</label>
+            <label for="charges">Total Charges OMR</label>
             <input type="text" id="charges" disabled />
           </div>
 
@@ -37,7 +37,7 @@
             <select id="payment" required>
               <option value="Credit Card">Credit Card</option>
               <option value="PayPal">PayPal</option>
-              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="Crypto">Crypto</option>
             </select>
           </div>
 
@@ -92,40 +92,27 @@
           .addEventListener("submit", function (e) {
             e.preventDefault();
 
-            const formData = {
-              full_name: document.getElementById("name").value,
-              email: document.getElementById("email").value,
-              event_title: document.getElementById("event").value,
-              event_type: eventPrice > 0 ? "paid" : "free",
-              charges: eventPrice,
-              payment_method: document.getElementById("payment").value,
-              transaction_id: document.getElementById("transaction").value,
-            };
+            const fullName = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const eventTitle = document.getElementById("event").value;
+            const eventPrice = document.getElementById("charges").value;
+            const paymentMethod = document.getElementById("payment").value;
+            const transactionId = document.getElementById("transaction").value;
 
-            fetch("register_event.php", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(formData),
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                if (data.success) {
-                  document.getElementById("successPopup").style.display =
-                    "flex";
-                } else {
-                  alert(data.message);
-                }
-              })
-              .catch((error) => console.error("Error:", error));
+            // Redirect to payment.html with query parameters
+            window.location.href = `/Event-Hive/payment/payment.php?full_name=${encodeURIComponent(
+              fullName
+            )}&email=${encodeURIComponent(
+              email
+            )}&event_title=${encodeURIComponent(
+              eventTitle
+            )}&event_price=${encodeURIComponent(
+              eventPrice
+            )}&payment_method=${encodeURIComponent(
+              paymentMethod
+            )}&transaction_id=${encodeURIComponent(transactionId)}`;
           });
       });
-
-      function closePopup() {
-        document.getElementById("successPopup").style.display = "none";
-        window.location.href = "/Event-Hive/allEvents/all-events.html";
-      }
     </script>
   </body>
 </html>

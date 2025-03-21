@@ -1,7 +1,14 @@
 <?php
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Include the database connection
 include '../dbConnection.php';
 
+// Check if the request method is POST and if the ID is set
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id"])) {
+    // Extract form data
     $id = $_POST["id"];
     $newTitle = $_POST["eventTitle"] ?? '';
     $category = $_POST["eventCategory"] ?? '';
@@ -12,17 +19,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id"])) {
     $endDate = $_POST["endDate"] ?? '';
     $eventType = $_POST["eventType"] ?? '';
     $eventPrice = $_POST["eventPrice"] ?? 0;
-    $eventImage = $_POST["eventImage"] ?? '';
     $description = $_POST["eventDescription"] ?? '';
 
+    // Validate required fields
     if (empty($newTitle)) {
         echo json_encode(["status" => "error", "message" => "Missing event title"]);
         exit;
     }
 
+    // Begin a transaction
     $conn->begin_transaction();
 
     try {
+        // Check if the event exists
         $checkStmt = $conn->prepare("SELECT title, image FROM events WHERE id = ?");
         $checkStmt->bind_param("i", $id);
         $checkStmt->execute();
@@ -34,10 +43,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id"])) {
             throw new Exception("Event with the given ID does not exist.");
         }
 
+        // Handle file upload
         $image = $oldImage;
-
         if (isset($_FILES["eventImage"]) && $_FILES["eventImage"]["error"] == 0) {
             $targetDir = "uploads/";
+            if (!is_dir($targetDir)) {
+                mkdir($targetDir, 0777, true); // Create the directory if it doesn't exist
+            }
             $imageFileType = strtolower(pathinfo($_FILES["eventImage"]["name"], PATHINFO_EXTENSION));
             $imageName = uniqid("event_", true) . "." . $imageFileType;
             $targetFilePath = $targetDir . $imageName;
@@ -54,38 +66,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id"])) {
             $image = $targetFilePath;
         }
 
+        // Update the event in the database
         $stmt = $conn->prepare("UPDATE events 
                                 SET title=?, category=?, venue=?, start_time=?, end_time=?, start_date=?, end_date=?, type=?, price=?, image=?, description=? 
                                 WHERE id=?");
         $stmt->bind_param("ssssssssdssi", $newTitle, $category, $venue, $startTime, $endTime, $startDate, $endDate, $eventType, $eventPrice, $image, $description, $id);
 
         if (!$stmt->execute()) {
-            throw new Exception("Failed to update the event.");
+            throw new Exception("Failed to update the event: " . $stmt->error);
         }
 
-        if ($stmt->affected_rows === 0) {
-            throw new Exception("No changes were made to the event.");
-        }
-
-        $updateRegStmt = $conn->prepare("UPDATE event_registrations 
-                                         SET event_title=?, event_type=?, charges=? 
-                                         WHERE event_title=?");
-        $updateRegStmt->bind_param("ssds", $newTitle, $eventType, $eventPrice, $oldTitle);
-
-        if (!$updateRegStmt->execute()) {
-            throw new Exception("Failed to update the event_registrations table.");
-        }
-
+        // Commit the transaction
         $conn->commit();
+
+        // Return success response
+        echo json_encode(["status" => "success", "message" => "Event updated successfully!"]);
     } catch (Exception $e) {
+        // Rollback the transaction on error
         $conn->rollback();
         echo json_encode(["status" => "error", "message" => $e->getMessage()]);
     }
 
+    // Close the statement and connection
     $stmt->close();
-    if (isset($updateRegStmt)) {
-        $updateRegStmt->close();
-    }
     $conn->close();
+} else {
+    // Invalid request
+    echo json_encode(["status" => "error", "message" => "Invalid request."]);
 }
 ?>

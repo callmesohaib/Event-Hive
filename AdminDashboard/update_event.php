@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id"])) {
         // Handle file upload
         $image = $oldImage;
         if (isset($_FILES["eventImage"]) && $_FILES["eventImage"]["error"] == 0) {
-            $targetDir = "uploads/";
+            $targetDir = "../uploads/";
             if (!is_dir($targetDir)) {
                 mkdir($targetDir, 0777, true); // Create the directory if it doesn't exist
             }

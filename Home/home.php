@@ -4,7 +4,13 @@ $is_logged_in = isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'];
 
 $user_email = $is_logged_in ? $_SESSION['email'] : null;
 $user_name = $is_logged_in ? $_SESSION['name'] : null;
+$isAdmin = false;
 $isOrganizer = false;
+if (strpos($user_email, "admin") !== false) {
+  $isAdmin = true;
+} else {
+  $isAdmin = false;
+}
 if (strpos($user_email, "organizer") !== false) {
   $isOrganizer = true;
 } else {
@@ -59,6 +65,8 @@ $past_conferences_result = $conn->query($past_conferences_query);
             <ul class="dropdown-links">
               <?php if ($isOrganizer): ?>
                 <li><a href="../OraganizerDashboard/org-dashboard.html">Organizer Dashboard</a></li>
+              <?php elseif ($isAdmin): ?>
+                <li><a href="../AdminDashboard/admin-dashboard.html">Admin Dashboard</a></li>
               <?php endif; ?>
               <li><a href="../userDashboard/user-dashboard.php">Dashboard</a></li>
               <li><a href="../logout.php" id="logout">Sign out</a></li>
@@ -89,7 +97,7 @@ $past_conferences_result = $conn->query($past_conferences_query);
             <img src="../resources/<?php echo htmlspecialchars($event['image']); ?>" alt="Event Image" />
             <div class="event-info">
               <span class="event-tag">
-                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - " . htmlspecialchars($event['price'])." OMR" ?>
+                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - " . htmlspecialchars($event['price']) . " OMR" ?>
               </span>
               <h3><?php echo htmlspecialchars($event['title']); ?></h3>
               <p class="event-date">
@@ -118,7 +126,7 @@ $past_conferences_result = $conn->query($past_conferences_query);
             <img src="../resources/<?php echo htmlspecialchars($event['image']); ?>" alt="Event Image" />
             <div class="event-info">
               <span class="event-tag">
-                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - " . htmlspecialchars($event['price']) ." OMR" ?>
+                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - " . htmlspecialchars($event['price']) . " OMR" ?>
               </span>
               <h3><?php echo htmlspecialchars($event['title']); ?></h3>
               <p class="event-date">
@@ -163,7 +171,7 @@ $past_conferences_result = $conn->query($past_conferences_query);
             <img src="../resources/<?php echo htmlspecialchars($event['image']); ?>" alt="Event Image" />
             <div class="event-info">
               <span class="event-tag">
-                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - " . htmlspecialchars($event['price'])." OMR" ?>
+                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - " . htmlspecialchars($event['price']) . " OMR" ?>
               </span>
               <h3><?php echo htmlspecialchars($event['title']); ?></h3>
               <p class="event-date">
@@ -193,7 +201,7 @@ $past_conferences_result = $conn->query($past_conferences_query);
             <img src="../resources/<?php echo htmlspecialchars($event['image']); ?>" alt="Event Image" />
             <div class="event-info">
               <span class="event-tag">
-                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - " . htmlspecialchars($event['price'])." OMR" ?>
+                <?php echo ($event['price'] == 0) ? "FREE" : "Paid - " . htmlspecialchars($event['price']) . " OMR" ?>
               </span>
               <h3><?php echo htmlspecialchars($event['title']); ?></h3>
               <p class="event-date">

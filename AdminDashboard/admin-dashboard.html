@@ -10,7 +10,11 @@
   <body>
     <!-- Navbar -->
     <header class="header">
-      <h1>Event<span class="header-text">Hive</span></h1>
+      <a href="../Home/home.php" style="cursor: pointer; text-decoration: none">
+        <h1>Event<span class="header-text">Hive</span></h1>
+      </a>
+
+      <button class="download-report">Download Report</button>
       <nav>
         <a href="../logout.php" class="signup">Sign out</a>
       </nav>
@@ -19,10 +23,6 @@
     <!-- Main Content -->
     <main class="container">
       <h2>All Users</h2>
-
-      <!-- Download Report Button -->
-      <button class="download-report">Download Report</button>
-
       <!-- Users Table -->
       <div class="event-table">
         <div class="event-row header-row">
@@ -37,8 +37,12 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const userTable = document.querySelector(".event-table");
+        document
+          .querySelector(".download-report")
+          .addEventListener("click", function () {
+            window.location.href = "download-report.php";
+          });
 
-        // Fetch users from the backend
         fetch("admin-dashboard.php")
           .then((response) => response.json())
           .then((users) => {
@@ -70,7 +74,7 @@
             .then((data) => {
               if (data.success) {
                 alert(data.success);
-                location.reload(); // Reload the page to update the list
+                location.reload();
               } else {
                 alert(data.error);
               }

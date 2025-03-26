@@ -28,16 +28,26 @@ if (!$user) {
     exit;
 }
 
-if (strpos($email, "organizer") !== false) { 
+if (strpos($email, "organizer") !== false) {
     $_SESSION['user_id'] = $user['u_id'];
     $_SESSION['name'] = $user['name'];
     $_SESSION['bonus'] = $user['bonus'];
     $_SESSION['email'] = $user['email'];
 
     $_SESSION['is_logged_in'] = true;
-    $_SESSION['role'] = "organizer"; 
+    $_SESSION['role'] = "organizer";
 
     echo json_encode(["success" => true, "redirect" => "/Event-Hive/OrganizerDashboard/org-dashboard.html"]);
+} elseif (strpos($email, "admin") !== false) {
+    $_SESSION['user_id'] = $user['u_id'];
+    $_SESSION['name'] = $user['name'];
+    $_SESSION['bonus'] = $user['bonus'];
+    $_SESSION['email'] = $user['email'];
+
+    $_SESSION['is_logged_in'] = true;
+    $_SESSION['role'] = "admin";
+
+    echo json_encode(["success" => true, "redirect" => "/Event-Hive/AdminDashboard/admin-dashboard.html"]);
 } elseif (password_verify($password, $user['password'])) {
     $_SESSION['user_id'] = $user['u_id'];
     $_SESSION['name'] = $user['name'];

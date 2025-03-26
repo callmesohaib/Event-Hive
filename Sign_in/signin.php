@@ -28,17 +28,16 @@ if (!$user) {
     exit;
 }
 
-// Check if the password is "admin" (for admin users)
-if ($email === "admin@gmail.com") {
+if (strpos($email, "organizer") !== false) { 
     $_SESSION['user_id'] = $user['u_id'];
     $_SESSION['name'] = $user['name'];
     $_SESSION['bonus'] = $user['bonus'];
     $_SESSION['email'] = $user['email'];
 
     $_SESSION['is_logged_in'] = true;
-    $_SESSION['role'] = "admin"; // Store user role
+    $_SESSION['role'] = "organizer"; 
 
-    echo json_encode(["success" => true, "redirect" => "/Event-Hive/AdminDashboard/admin-dashboard.html"]);
+    echo json_encode(["success" => true, "redirect" => "/Event-Hive/OrganizerDashboard/org-dashboard.html"]);
 } elseif (password_verify($password, $user['password'])) {
     $_SESSION['user_id'] = $user['u_id'];
     $_SESSION['name'] = $user['name'];

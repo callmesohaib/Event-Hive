@@ -4,10 +4,13 @@ $is_logged_in = isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in'];
 
 $user_email = $is_logged_in ? $_SESSION['email'] : null;
 $user_name = $is_logged_in ? $_SESSION['name'] : null;
-$isAdmin = false;
-if ($user_email == "admin@gmail.com") {
-  $isAdmin = true;
+$isOrganizer = false;
+if (strpos($user_email, "organizer") !== false) {
+  $isOrganizer = true;
+} else {
+  $isOrganizer = false;
 }
+
 include '../dbConnection.php';
 
 $upcoming_events_query = "SELECT * FROM events WHERE start_date >= NOW() AND category = 'event' ORDER BY start_date ASC";
@@ -54,8 +57,8 @@ $past_conferences_result = $conn->query($past_conferences_query);
               <p class="user-email"><?php echo $user_email; ?></p>
             </div>
             <ul class="dropdown-links">
-              <?php if ($isAdmin): ?>
-                <li><a href="../AdminDashboard/admin-dashboard.html">Admin Dashboard</a></li>
+              <?php if ($isOrganizer): ?>
+                <li><a href="../OraganizerDashboard/org-dashboard.html">Organizer Dashboard</a></li>
               <?php endif; ?>
               <li><a href="../userDashboard/user-dashboard.php">Dashboard</a></li>
               <li><a href="../logout.php" id="logout">Sign out</a></li>

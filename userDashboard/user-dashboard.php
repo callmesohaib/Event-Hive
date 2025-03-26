@@ -61,7 +61,8 @@ $conn->close();
                         <div><?php echo htmlspecialchars($event['venue']); ?></div>
                         <div><?php echo date("F j, Y, g:i A", strtotime($event['start_date'] . ' ' . $event['start_time'])); ?>
                         </div>
-                        <div><?php echo ($event['price'] == 0) ? "Free" : "Paid - " . htmlspecialchars($event['price'])." OMR" ?>
+                        <div>
+                            <?php echo ($event['price'] == 0) ? "Free" : "Paid - " . htmlspecialchars($event['price']) . " OMR" ?>
                         </div>
                     </div>
                 <?php endwhile; ?>

@@ -9,13 +9,11 @@
 
   <body>
     <header class="header">
-      <a href="../Home/home.php" style="cursor: pointer; text-decoration: none;">
+      <a href="../Home/home.php" style="cursor: pointer; text-decoration: none">
         <h1>Event<span class="header-text">Hive</span></h1>
       </a>
       <nav>
-        <a href="../AdminDashboard/admin-dashboard.html" 
-          >All Events</a
-        >
+        <a href="../OrganizerDashboard/org-dashboard.html">All Events</a>
         <a href="../logout.php" class="signup">Sign out</a>
       </nav>
     </header>
@@ -130,7 +128,7 @@
         fetch("../check_session.php")
           .then((response) => response.json())
           .then((data) => {
-            if (!data.is_logged_in || data.email !== "admin@gmail.com") {
+            if (!data.is_logged_in || !data.email.includes("organizer")) {
               window.location.href = "/Event-Hive/Sign_in/signin.html";
             }
           })
@@ -138,31 +136,35 @@
             console.error("Error fetching session:", error);
             window.location.href = "/Event-Hive/Sign_in/signin.html";
           });
-    
+
         // Handle event type change
-        document.getElementById("eventType").addEventListener("change", function () {
-          const priceInput = document.getElementById("eventPrice");
-          priceInput.disabled = this.value !== "paid"; // Enable for "paid", disable for "free"
-          if (this.value === "free") priceInput.value = ""; // Clear value for free events
-        });
-    
+        document
+          .getElementById("eventType")
+          .addEventListener("change", function () {
+            const priceInput = document.getElementById("eventPrice");
+            priceInput.disabled = this.value !== "paid"; // Enable for "paid", disable for "free"
+            if (this.value === "free") priceInput.value = ""; // Clear value for free events
+          });
+
         // Get event ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const eventId = urlParams.get("id");
-    
+
         if (eventId) {
           // Update mode
           document.querySelector(".title").innerHTML = "Update Event";
           document.querySelector("button").textContent = "Update Event";
-    
+
           try {
             // Fetch event data
             const response = await fetch(
-              `../AdminDashboard/fetch_event.php?id=${encodeURIComponent(eventId)}`
+              `../OrganizerDashboard/fetch_event.php?id=${encodeURIComponent(
+                eventId
+              )}`
             );
             const textResponse = await response.text();
             console.log("Raw Response:", textResponse);
-    
+
             let eventData;
             try {
               eventData = JSON.parse(textResponse);
@@ -170,7 +172,7 @@
               console.error("Invalid JSON Response:", textResponse);
               return;
             }
-    
+
             if (eventData && eventData.status === "success") {
               populateForm(eventData.event);
             } else {
@@ -181,22 +183,25 @@
             alert("Failed to load event details.");
           }
         }
-    
+
         // Attach the correct submit handler based on mode
         const form = document.getElementById("createEventForm");
         form.addEventListener("submit", async function (event) {
           event.preventDefault();
           const formData = new FormData(this);
-    
+
           if (eventId) {
             // Update event
             formData.append("id", eventId);
-    
+
             try {
-              const response = await fetch("../AdminDashboard/update_event.php", {
-                method: "POST",
-                body: formData,
-              });
+              const response = await fetch(
+                "../OrganizerDashboard/update_event.php",
+                {
+                  method: "POST",
+                  body: formData,
+                }
+              );
               const result = await response.json();
               alert(result.message);
               if (result.status === "success") {
@@ -205,7 +210,7 @@
             } catch (error) {
               console.error("Error updating event:", error);
               alert("Failed to update event.");
-            } 
+            }
           } else {
             // Create event
             try {
@@ -224,7 +229,7 @@
             }
           }
         });
-    
+
         // Populate form with event data
         function populateForm(event) {
           document.getElementById("eventCategory").value = event.category || "";
@@ -237,7 +242,7 @@
           document.getElementById("startDate").value = event.start_date || "";
           document.getElementById("endDate").value = event.end_date || "";
           document.getElementById("eventType").value = event.type || "";
-    
+
           // Enable/disable charges input based on event type
           const priceInput = document.getElementById("eventPrice");
           if (event.type === "paid") {
@@ -247,9 +252,10 @@
             priceInput.disabled = true; // Disable for free events
             priceInput.value = "";
           }
-    
-          document.getElementById("eventDescription").value = event.description || "";
-    
+
+          document.getElementById("eventDescription").value =
+            event.description || "";
+
           if (event.image) {
             const imagePreview = document.createElement("img");
             imagePreview.src = event.image;

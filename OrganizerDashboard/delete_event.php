@@ -4,10 +4,11 @@ header('Content-Type: application/json');
 
 include '../dbConnection.php';
 
-if (!isset($_SESSION['is_logged_in']) || !$_SESSION['is_logged_in'] || $_SESSION['email'] !== "admin@gmail.com") {
+if (!isset($_SESSION['is_logged_in']) || !$_SESSION['is_logged_in'] || strpos($_SESSION['email'], "organizer") === false) {
     echo json_encode(["error" => "Unauthorized access"]);
     exit;
 }
+
 
 $data = json_decode(file_get_contents("php://input"), true);
 if (!isset($data['id']) || empty($data['id']) || !is_numeric($data['id'])) {
@@ -15,7 +16,7 @@ if (!isset($data['id']) || empty($data['id']) || !is_numeric($data['id'])) {
     exit;
 }
 
-$eventId = intval($data['id']); // Ensure it's an integer
+$eventId = intval($data['id']); 
 
 $conn->begin_transaction();
 

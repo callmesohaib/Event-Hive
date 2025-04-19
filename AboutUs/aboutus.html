@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us | EventHive</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Header Styles */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 3rem;
+        background-color: #10107b;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: white;
+        margin: 0;
+      }
+
+      .header-text {
+        color: #7848f4;
+      }
+
+      nav {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      nav a:hover {
+        color: #b39eff;
+      }
+
+      nav a.active::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: #7848f4;
+        border-radius: 3px;
+      }
+
+      nav a.signup {
+        background: #7848f4;
+        padding: 0.8rem 1.8rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      nav a.signup:hover {
+        background: #5f3ac4;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(120, 72, 244, 0.4);
+        color: white;
+      }
+
+      /* Hero Section */
+      .hero {
+        height: 80vh;
+        background: linear-gradient(
+            135deg,
+            rgba(16, 16, 123, 0.9),
+            rgba(120, 72, 244, 0.9)
+          ),
+          url("https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80")
+            center/cover no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to right,
+          rgba(16, 16, 123, 0.8),
+          rgba(120, 72, 244, 0.6)
+        );
+        z-index: 1;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        padding: 0 2rem;
+        animation: fadeIn 1s ease-out;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .hero p {
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+      }
+
+      .hero-btn {
+        display: inline-flex;
+        align-items: center;
+        background: white;
+        color: #7848f4;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .hero-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        background: #f0f0f0;
+      }
+
+      .hero-btn i {
+        margin-left: 8px;
+        transition: transform 0.3s ease;
+      }
+
+      .hero-btn:hover i {
+        transform: translateX(5px);
+      }
+
+      /* About Cards Section */
+      .about-section {
+        padding: 6rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      .section-title h2 {
+        font-size: 2.5rem;
+        color: #10107b;
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+      }
+
+      .section-title h2::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(to right, #10107b, #7848f4);
+        border-radius: 2px;
+      }
+
+      .section-title p {
+        color: #666;
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .cards-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+      }
+
+      .about-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        transition: all 0.4s ease;
+        position: relative;
+        z-index: 1;
+      }
+
+      .about-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-image {
+        height: 200px;
+        overflow: hidden;
+      }
+
+      .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .about-card:hover .card-image img {
+        transform: scale(1.1);
+      }
+
+      .card-content {
+        padding: 2rem;
+      }
+
+      .card-content h3 {
+        font-size: 1.5rem;
+        color: #10107b;
+        margin-bottom: 1rem;
+      }
+
+      .card-content p {
+        color: #666;
+        margin-bottom: 1.5rem;
+      }
+
+      .card-icon {
+        font-size: 2.5rem;
+        color: #7848f4;
+        margin-bottom: 1rem;
+      }
+
+      /* Stats Section */
+      .stats-section {
+        background: linear-gradient(135deg, #10107b, #7848f4);
+        color: white;
+        padding: 5rem 2rem;
+        text-align: center;
+      }
+
+      .stats-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+      }
+
+      .stat-item {
+        padding: 2rem;
+        position: relative;
+      }
+
+      .stat-item::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        z-index: 0;
+      }
+
+      .stat-number {
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .stat-text {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Team Section */
+      .team-section {
+        padding: 6rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .team-members {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+      }
+
+      .team-member {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .team-member:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+      }
+
+      .member-image {
+        height: 300px;
+        overflow: hidden;
+      }
+
+      .member-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .team-member:hover .member-image img {
+        transform: scale(1.05);
+      }
+
+      .member-info {
+        padding: 1.5rem;
+      }
+
+      .member-info h4 {
+        font-size: 1.3rem;
+        color: #10107b;
+        margin-bottom: 0.5rem;
+      }
+
+      .member-info p {
+        color: #7848f4;
+        font-weight: 500;
+        margin-bottom: 1rem;
+      }
+
+      .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .social-links a {
+        color: #666;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+      }
+
+      .social-links a:hover {
+        color: #7848f4;
+        transform: translateY(-3px);
+      }
+
+      /* Footer */
+      .footer {
+        background: #10107b;
+        color: white;
+        padding: 5rem 2rem 2rem;
+        position: relative;
+      }
+
+      .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 3rem;
+      }
+
+      .footer-logo {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+      }
+
+      .footer-logo span {
+        color: #7848f4;
+      }
+
+      .footer-about p {
+        opacity: 0.8;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+
+      .footer-social {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .footer-social a {
+        color: white;
+        font-size: 1.3rem;
+        transition: all 0.3s ease;
+      }
+
+      .footer-social a:hover {
+        color: #b39eff;
+        transform: translateY(-3px);
+      }
+
+      .footer-links h3,
+      .footer-contact h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+      }
+
+      .footer-links h3::after,
+      .footer-contact h3::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background: #7848f4;
+        border-radius: 3px;
+      }
+
+      .footer-links ul {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 0.8rem;
+      }
+
+      .footer-links a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: white;
+        padding-left: 5px;
+      }
+
+      .footer-contact p {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        opacity: 0.8;
+      }
+
+      .footer-contact i {
+        color: #7848f4;
+      }
+
+      .footer-newsletter p {
+        opacity: 0.8;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+      }
+
+      .newsletter-form {
+        display: flex;
+        margin-bottom: 1.5rem;
+      }
+
+      .newsletter-input {
+        flex: 1;
+        padding: 0.8rem 1rem;
+        border: none;
+        border-radius: 5px 0 0 5px;
+        font-size: 1rem;
+      }
+
+      .newsletter-btn {
+        background: #7848f4;
+        color: white;
+        border: none;
+        padding: 0 1.5rem;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .newsletter-btn:hover {
+        background: #5f3ac4;
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 3rem;
+        margin-top: 3rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .footer-bottom p {
+        opacity: 0.7;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .header {
+          flex-direction: column;
+          padding: 1.5rem;
+          gap: 1.5rem;
+        }
+
+        nav {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 1rem;
+        }
+
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+
+        .hero p {
+          font-size: 1.1rem;
+        }
+
+        .section-title h2 {
+          font-size: 2rem;
+        }
+
+        .stats-container {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <h1>Event<span class="header-text">Hive</span></h1>
+      <nav>
+        <a href="../Home/home.php">Home</a>
+        <a href="../AboutUs/aboutus.html" class="active">About</a>
+        <a href="../ContactUs/contactus.php">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Revolutionizing Event Experiences Worldwide</h1>
+        <p>
+          At EventHive, we're passionate about creating seamless connections
+          between organizers and attendees through innovative technology and
+          unforgettable experiences.
+        </p>
+        <a href="#about" class="hero-btn"
+          >Explore Our Story <i class="fas fa-arrow-right"></i
+        ></a>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+      <div class="section-title">
+        <h2>Our Vision & Values</h2>
+        <p>
+          We believe every event should be memorable, accessible, and effortless
+          to organize. These principles guide everything we do.
+        </p>
+      </div>
+
+      <div class="cards-container">
+        <div class="about-card">
+          <div class="card-image">
+            <img
+              src="https://images.unsplash.com/photo-1527525443983-6e60c75fff46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=770&q=80"
+              alt="Our Mission"
+            />
+          </div>
+          <div class="card-content">
+            <div class="card-icon">
+              <i class="fas fa-bullseye"></i>
+            </div>
+            <h3>Our Mission</h3>
+            <p>
+              To democratize event management by providing powerful yet simple
+              tools that empower anyone to create, promote, and manage
+              successful events of any scale.
+            </p>
+          </div>
+        </div>
+
+        <div class="about-card">
+          <div class="card-image">
+            <img
+              src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              alt="What We Do"
+            />
+          </div>
+          <div class="card-content">
+            <div class="card-icon">
+              <i class="fas fa-lightbulb"></i>
+            </div>
+            <h3>What We Do</h3>
+            <p>
+              We build comprehensive event solutions that handle ticketing,
+              promotion, attendee engagement, and analytics - all in one
+              intuitive platform.
+            </p>
+          </div>
+        </div>
+
+        <div class="about-card">
+          <div class="card-image">
+            <img
+              src="https://i.pinimg.com/736x/ae/53/ff/ae53ff70e222c1dc44c5b12d2b18418f.jpg   "
+              alt="Our Team"
+            />
+          </div>
+          <div class="card-content">
+            <div class="card-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Our Team</h3>
+            <p>
+              A diverse collective of event professionals, technologists, and
+              creatives united by our passion for bringing people together in
+              meaningful ways.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <div class="stats-container">
+        <div class="stat-item">
+          <div class="stat-number">10K+</div>
+          <div class="stat-text">Events Hosted</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">500K+</div>
+          <div class="stat-text">Happy Attendees</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">120+</div>
+          <div class="stat-text">Countries Reached</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">98%</div>
+          <div class="stat-text">Customer Satisfaction</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+      <div class="section-title">
+        <h2>Meet Our Leadership</h2>
+        <p>The brilliant minds driving EventHive's vision forward</p>
+      </div>
+
+      <div class="team-members">
+        <div class="team-member">
+          <div class="member-image">
+            <img
+              src="https://i.pinimg.com/736x/38/d5/64/38d564e91b64bc0258896e35c8df359e.jpg"
+              alt="CEO"
+            />
+          </div>
+          <div class="member-info">
+            <h4>Alex Johnson</h4>
+            <p>CEO & Founder</p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fas fa-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-member">
+          <div class="member-image">
+            <img
+              src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
+              alt="CTO"
+            />
+          </div>
+          <div class="member-info">
+            <h4>Sarah Williams</h4>
+            <p>Chief Technology Officer</p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-github"></i></a>
+              <a href="#"><i class="fas fa-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-member">
+          <div class="member-image">
+            <img
+              src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              alt="CMO"
+            />
+          </div>
+          <div class="member-info">
+            <h4>Michael Chen</h4>
+            <p>Chief Marketing Officer</p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fas fa-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-about">
+          <div class="footer-logo">Event<span>Hive</span></div>
+          <p>
+            Empowering creators and organizers with the best event management
+            platform since 2018.
+          </p>
+          <div class="footer-social">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="../Home/home.php">Home</a></li>
+            <li><a href="../AboutUs/aboutus.html">About Us</a></li>
+            <li><a href="../ContactUs/contactus.php">Contact</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Pricing</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-contact">
+          <h3>Contact Us</h3>
+          <p>
+            <i class="fas fa-map-marker-alt"></i> 123 Event Street, San
+            Francisco, CA
+          </p>
+          <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+          <p><i class="fas fa-envelope"></i> info@eventhive.com</p>
+        </div>
+
+        <div class="footer-newsletter">
+          <h3>Newsletter</h3>
+          <p>
+            Subscribe to our newsletter for the latest updates and event tips.
+          </p>
+          <form class="newsletter-form">
+            <input
+              type="email"
+              placeholder="Your email"
+              class="newsletter-input"
+            />
+            <button type="submit" class="newsletter-btn">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>
+          &copy; 2025 EventHive. All rights reserved. |
+          <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
+        });
+      });
+
+      // Animation on scroll
+      const animateOnScroll = () => {
+        const elements = document.querySelectorAll(
+          ".about-card, .stat-item, .team-member"
+        );
+
+        elements.forEach((element) => {
+          const elementPosition = element.getBoundingClientRect().top;
+          const screenPosition = window.innerHeight / 1.2;
+
+          if (elementPosition < screenPosition) {
+            element.style.opacity = "1";
+            element.style.transform = "translateY(0)";
+          }
+        });
+      };
+
+      // Set initial state for animation
+      document
+        .querySelectorAll(".about-card, .stat-item, .team-member")
+        .forEach((element) => {
+          element.style.opacity = "0";
+          element.style.transform = "translateY(20px)";
+          element.style.transition = "all 0.6s ease-out";
+        });
+
+      window.addEventListener("scroll", animateOnScroll);
+      window.addEventListener("load", animateOnScroll);
+    </script>
+  </body>
+</html>

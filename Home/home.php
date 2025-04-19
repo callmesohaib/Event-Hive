@@ -69,6 +69,8 @@ $past_conferences_result = $conn->query($past_conferences_query);
                 <li><a href="../AdminDashboard/admin-dashboard.html">Admin Dashboard</a></li>
               <?php endif; ?>
               <li><a href="../userDashboard/user-dashboard.php">Dashboard</a></li>
+              <li><a href="../AboutUs/aboutus.html">About Us</a></li>
+              <li><a href="../CpntactUs/contactus.php">Contact Us</a></li>
               <li><a href="../logout.php" id="logout">Sign out</a></li>
             </ul>
           </div>

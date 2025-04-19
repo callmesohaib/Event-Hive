@@ -288,7 +288,9 @@ if (!isset($_SESSION['is_logged_in']) || !$_SESSION['is_logged_in']) {
 
 <body>
     <header class="header">
-        <h1>Event<span class="header-text">Hive</span></h1>
+        <a href="../Home/home.php" style="cursor: pointer; text-decoration: none">
+            <h1>Event<span class="header-text" >Hive</span></h1>
+        </a>
         <nav>
             <a href="../logout.php" class="signup">Signup</a>
         </nav>

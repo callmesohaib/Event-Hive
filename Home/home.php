@@ -70,7 +70,7 @@ $past_conferences_result = $conn->query($past_conferences_query);
               <?php endif; ?>
               <li><a href="../userDashboard/user-dashboard.php">Dashboard</a></li>
               <li><a href="../AboutUs/aboutus.html">About Us</a></li>
-              <li><a href="../CpntactUs/contactus.php">Contact Us</a></li>
+              <li><a href="../ContactUs/contactus.php">Contact Us</a></li>
               <li><a href="../logout.php" id="logout">Sign out</a></li>
             </ul>
           </div>
